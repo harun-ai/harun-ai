@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev:koa": "node -r esbuild-register src/consumer/httpConsumer/koaHttpConsumer/server.ts",
-    "start:koa": "node .",
+    "start": "node .",
     "build:koa": "esbuild src/consumer/httpConsumer/koaHttpConsumer/server.ts --bundle --minify --outfile=dist/bundle.js --platform=node --target=es2022 --analyze",
     "postinstall": "yarn build:koa"
   },
