@@ -1,10 +1,35 @@
 {
   "name": "@harun-ai/harun-ai-api",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "dist/bundle.js",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "16.x"
+  },
+  "scripts": {
+    "dev:koa": "node -r esbuild-register src/consumer/httpConsumer/koaHttpConsumer/server.ts",
+    "start:koa": "node .",
+    "build:koa": "esbuild src/consumer/httpConsumer/koaHttpConsumer/server.ts --bundle --minify --outfile=dist/bundle.js --platform=node --target=es2022 --analyze",
+    "postinstall": "yarn build:koa"
+  },
   "devDependencies": {
+    "@types/koa": "^2.13.5",
+    "@types/koa-bodyparser": "^4.3.10",
+    "@types/koa-logger": "^3.1.2",
+    "@types/koa__cors": "^3.3.0",
+    "@types/koa__router": "^12.0.0",
+    "@types/uuid": "^9.0.0",
+    "esbuild": "^0.16.13",
+    "esbuild-register": "^3.4.2",
     "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@koa/cors": "^4.0.0",
+    "@koa/router": "^12.0.0",
+    "koa": "^2.14.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-logger": "^3.2.1",
+    "uuid": "^9.0.0"
   }
 }
