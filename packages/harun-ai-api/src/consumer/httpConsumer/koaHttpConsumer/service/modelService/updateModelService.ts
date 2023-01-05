@@ -1,19 +1,20 @@
 import { ParameterizedContext } from 'koa';
+import InvalidInputSchemaError from 'packages/harun-ai-api/src/core/errors/InvalidInputSchemaError';
 import Model from '../../../../../core/entities/Model';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
-import GetModelUseCase from '../../../../../core/useCase/model/getModelUseCase';
+import UpdateModelUseCase from '../../../../../core/useCase/model/updateModelUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
-export default class GetModelService<IdType>
+export default class UpdateModelService<IdType>
   implements IService<Model<IdType>>
 {
-  constructor(private getModelUseCase: GetModelUseCase<IdType>) {}
+  constructor(private updateModelUseCase: UpdateModelUseCase<IdType>) {}
   async execute(
     ctx: ParameterizedContext
   ): Promise<ServiceDTO<Model<IdType>>['Response']> {
-    const modelId = ctx.params.modelId;
+    const model = ctx.request.body as Model<IdType>;
 
-    if (!modelId) {
+    if (!model.id) {
       return {
         error: 'Model id is required',
         statusCode: StatusCode.BAD_REQUEST,
@@ -22,7 +23,7 @@ export default class GetModelService<IdType>
 
     try {
       return {
-        success: await this.getModelUseCase.use({ modelId }),
+        success: await this.updateModelUseCase.use(model),
         statusCode: StatusCode.OK,
       };
     } catch (error) {
@@ -30,6 +31,11 @@ export default class GetModelService<IdType>
         return {
           error: error.message,
           statusCode: StatusCode.NOT_FOUND,
+        };
+      } else if (error instanceof InvalidInputSchemaError) {
+        return {
+          error: error.message,
+          statusCode: StatusCode.BAD_REQUEST,
         };
       }
       return {

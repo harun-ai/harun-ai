@@ -1,16 +1,13 @@
 import { ParameterizedContext } from 'koa';
-import Model from '../../../../../core/entities/Model';
+import DeleteModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/deleteModelUseCase';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
-import GetModelUseCase from '../../../../../core/useCase/model/getModelUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
-export default class GetModelService<IdType>
-  implements IService<Model<IdType>>
-{
-  constructor(private getModelUseCase: GetModelUseCase<IdType>) {}
+export default class DeleteModelService<IdType> implements IService<void> {
+  constructor(private deleteModelUseCase: DeleteModelUseCase<IdType>) {}
   async execute(
     ctx: ParameterizedContext
-  ): Promise<ServiceDTO<Model<IdType>>['Response']> {
+  ): Promise<ServiceDTO<void>['Response']> {
     const modelId = ctx.params.modelId;
 
     if (!modelId) {
@@ -22,8 +19,8 @@ export default class GetModelService<IdType>
 
     try {
       return {
-        success: await this.getModelUseCase.use({ modelId }),
-        statusCode: StatusCode.OK,
+        success: await this.deleteModelUseCase.use({ modelId }),
+        statusCode: StatusCode.NO_CONTENT,
       };
     } catch (error) {
       if (error instanceof ModelNotFoundError) {
