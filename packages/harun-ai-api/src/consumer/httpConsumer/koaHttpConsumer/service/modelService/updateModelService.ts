@@ -38,6 +38,7 @@ export default class UpdateModelService<IdType>
           statusCode: StatusCode.BAD_REQUEST,
         };
       }
+      console.log(error.message);
       return {
         error: 'Unexpect error',
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,

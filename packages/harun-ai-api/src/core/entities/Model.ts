@@ -10,9 +10,15 @@ export default class Model<IdType> extends Entity<IdType> {
     super(idProvider);
     Object.assign(this, source);
   }
-  name?: string;
-  description?: string;
-  inputSchema?: object;
-  text?: string;
+  name: string;
+  model: string;
+  description: string;
+  inputSchema: Record<string, unknown>;
+  prompt: string;
+  temperature?: number;
+  maxTokens?: number;
+  topP?: number;
+  frequencyPenalty?: number;
+  presencePenalty?: number;
   user?: User<IdType>;
 }

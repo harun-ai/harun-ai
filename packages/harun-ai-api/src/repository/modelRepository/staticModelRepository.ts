@@ -18,10 +18,17 @@ export default class StaticModelRepository<IdType>
     this.models.push(
       new Model(this.idProvider, {
         name: 'Atas de Reunião',
-        description: 'Atas de Reunião',
-        text: 'Atas de Reunião com {{variable}} variável',
+        model: 'text-davinci-003',
+        description: 'Construir uma ata de reunião ou um relato de um encontro',
+        prompt:
+          'Converta minhas {{annotations}} em um {{type}} da reunião, escrita em primeira mão e crie uma lista de {{tasks}}',
+        temperature: 0,
+        maxTokens: 500,
+        topP: 1,
+        frequencyPenalty: 0,
+        presencePenalty: 0,
         inputSchema: {
-          required: ['annotations', 'tasks', 'reportOn', 'minutes'],
+          required: ['annotations', 'tasks', 'type'],
           type: 'object',
           properties: {
             annotations: {
@@ -32,13 +39,10 @@ export default class StaticModelRepository<IdType>
               type: 'string',
               description: 'Tarefas',
             },
-            reportOn: {
-              type: 'boolean',
-              description: 'Com relato',
-            },
-            minutes: {
-              type: 'boolean',
-              description: 'Com ata',
+            type: {
+              type: 'string',
+              enum: ['relato', 'ata'],
+              description: 'Tipo relato ou ata',
             },
           },
         },
@@ -47,15 +51,22 @@ export default class StaticModelRepository<IdType>
     this.models.push(
       new Model(this.idProvider, {
         name: 'Explique a uma criança',
-        description: 'Explique a uma criança',
-        text: 'Explique a uma criança com {{variable}} variável',
+        model: 'text-davinci-003',
+        description:
+          'Traduz texto difícil em conceitos mais simples.que até uma criança pode entender',
+        prompt: 'Resuma para uma criança: {{text}}',
+        temperature: 0.7,
+        maxTokens: 500,
+        topP: 1,
+        frequencyPenalty: 0,
+        presencePenalty: 0,
         inputSchema: {
-          type: 'object',
           required: ['text'],
+          type: 'object',
           properties: {
             text: {
               type: 'string',
-              description: 'Anotações',
+              description: 'Texto',
             },
           },
         },
@@ -64,9 +75,7 @@ export default class StaticModelRepository<IdType>
   }
 
   async getAll(): Promise<Model<IdType>[]> {
-    return this.models.map(model => {
-      return { id: model.id, name: model.name, description: model.description };
-    });
+    return this.models;
   }
 
   async get(modelId: IdType): Promise<Model<IdType>> {

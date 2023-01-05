@@ -29,6 +29,7 @@ export default class DeleteModelService<IdType> implements IService<void> {
           statusCode: StatusCode.NOT_FOUND,
         };
       }
+      console.log(error.message);
       return {
         error: 'Unexpect error',
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,
