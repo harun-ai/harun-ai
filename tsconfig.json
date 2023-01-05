@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    /* Veja https://aka.ms/tsconfig.json para mais informações */
+    "target": "esnext",
+    "lib": [
+      "esnext",
+    ],
+    "module": "es2022",
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "strictPropertyInitialization": false
+  },
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    ".serverless/**/*",
+    ".webpack/**/*"
+  ]
+}
