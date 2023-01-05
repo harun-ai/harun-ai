@@ -1,3 +1,7 @@
 export default interface ISchemaProvider {
-  validateSchema(object: Record<string, any>): Promise<void>;
+  validateSchema(schema: Record<string, unknown>): Promise<void>;
+  validate<ObjectType>(
+    object: unknown,
+    schema: Record<string, unknown>
+  ): Promise<ObjectType>;
 }

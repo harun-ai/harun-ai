@@ -1,5 +1,6 @@
 import Router from '@koa/router';
 import {
+  createCompletionUseCase,
   createModelUseCase,
   deletModelUseCase,
   getModelUseCase,
@@ -11,6 +12,7 @@ import GetModelService from './getModelService';
 import ListModelsService from './listModelsService';
 import CreateModelService from './createModelService';
 import DeleteModelService from './deleteModelService';
+import CreateCompletionService from './createCompletionService';
 
 const modelRouter = new Router();
 
@@ -44,6 +46,14 @@ modelRouter.put('/model', async ctx => {
 
 modelRouter.delete('/model/:modelId', async ctx => {
   const response = await new DeleteModelService(deletModelUseCase).execute(ctx);
+  ctx.status = response.statusCode;
+  ctx.body = response;
+});
+
+modelRouter.post('/model/completion', async ctx => {
+  const response = await new CreateCompletionService(
+    createCompletionUseCase
+  ).execute(ctx);
   ctx.status = response.statusCode;
   ctx.body = response;
 });

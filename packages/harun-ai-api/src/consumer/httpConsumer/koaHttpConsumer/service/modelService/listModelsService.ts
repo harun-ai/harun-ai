@@ -13,6 +13,7 @@ export default class ListModelsService<IdType>
         statusCode: StatusCode.OK,
       };
     } catch (error) {
+      console.log(error.message);
       return {
         error: 'Unexpect error',
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,
