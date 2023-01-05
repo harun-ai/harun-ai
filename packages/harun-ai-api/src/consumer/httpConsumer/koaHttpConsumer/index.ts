@@ -3,7 +3,7 @@ import CreateModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/cre
 import DeleteModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/deleteModelUseCase';
 import UpdateModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/updateModelUseCase';
 import OpenAIModelPredictionProvider from 'packages/harun-ai-api/src/provider/modelPredictionProvider/OpenAIModelPredictionProvider';
-import JsonSchemaProvider from 'packages/harun-ai-api/src/provider/schemaProvider/jsonSchemaProvider';
+import JsonSchemaProvider from 'packages/harun-ai-api/src/provider/schemaProvider/JsonSchemaProvider';
 import MustacheTemplateStringProvider from 'packages/harun-ai-api/src/provider/templateStringProvider/MustacheTemplateStringProvider';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
