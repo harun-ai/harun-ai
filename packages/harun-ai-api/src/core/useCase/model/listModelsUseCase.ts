@@ -4,7 +4,7 @@ import IUseCase from '../IUseCase';
 
 export type ListModelsUseCaseDTO = {
   Request: object;
-  Response: Model[];
+  Response: Partial<Model>[];
 };
 
 export default class ListModelsUseCase
@@ -12,7 +12,7 @@ export default class ListModelsUseCase
 {
   constructor(private modelRepository: IModelRepository) {}
 
-  async use(): Promise<Model[]> {
+  async use(): Promise<ListModelsUseCaseDTO['Response']> {
     return this.modelRepository.getAll();
   }
 }

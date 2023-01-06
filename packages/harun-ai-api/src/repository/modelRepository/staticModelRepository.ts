@@ -68,8 +68,10 @@ export default class StaticModelRepository implements IModelRepository {
     );
   }
 
-  async getAll(): Promise<Model[]> {
-    return this.models;
+  async getAll(): Promise<Partial<Model>[]> {
+    return await this.models.map(item => {
+      return { id: item.id, name: item.name, descrtion: item.description };
+    });
   }
 
   async get(modelId: string): Promise<Model> {
