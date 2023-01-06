@@ -10,7 +10,8 @@
   "scripts": {
     "dev:koa": "node -r esbuild-register src/consumer/httpConsumer/koaHttpConsumer/server.ts",
     "start": "node .",
-    "build:koa": "esbuild src/consumer/httpConsumer/koaHttpConsumer/server.ts --bundle --minify --outfile=dist/bundle.js --platform=node --target=es2022 --analyze"
+    "build:koa": "esbuild src/consumer/httpConsumer/koaHttpConsumer/server.ts --bundle --minify --outfile=dist/bundle.js --platform=node --target=es2022 --analyze",
+    "postinstall": "yarn build:koa"
   },
   "devDependencies": {
     "@types/koa": "^2.13.5",
