@@ -2,23 +2,27 @@ import IModelRepository from '../../../repository/modelRepository/IModelReposito
 import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
-export type UpdateModelUseCaseDTO<IdType> = {
+export type UpdateModelUseCaseDTO = {
   Request: {
-    id: IdType;
-    inputSchema?: object;
-    text?: string;
+    id: string;
+    model?: string;
     description?: string;
+    inputSchema?: Record<string, unknown>;
+    prompt?: string;
+    temperature?: number;
+    maxTokens?: number;
+    topP?: number;
+    frequencyPenalty?: number;
+    presencePenalty?: number;
   };
-  Response: Model<IdType>;
+  Response: Model;
 };
 
-export default class UpdateModelUseCase<IdType>
-  implements IUseCase<UpdateModelUseCaseDTO<IdType>>
+export default class UpdateModelUseCase
+  implements IUseCase<UpdateModelUseCaseDTO>
 {
-  constructor(private modelRepository: IModelRepository<IdType>) {}
-  async use(
-    model: UpdateModelUseCaseDTO<IdType>['Request']
-  ): Promise<Model<IdType>> {
+  constructor(private modelRepository: IModelRepository) {}
+  async use(model: UpdateModelUseCaseDTO['Request']): Promise<Model> {
     return this.modelRepository.update(model);
   }
 }

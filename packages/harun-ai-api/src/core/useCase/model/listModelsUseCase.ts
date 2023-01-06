@@ -2,17 +2,17 @@ import IModelRepository from '../../../repository/modelRepository/IModelReposito
 import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
-export type ListModelsUseCaseDTO<IdType> = {
+export type ListModelsUseCaseDTO = {
   Request: object;
-  Response: Model<IdType>[];
+  Response: Model[];
 };
 
-export default class ListModelsUseCase<IdType>
-  implements IUseCase<ListModelsUseCaseDTO<IdType>>
+export default class ListModelsUseCase
+  implements IUseCase<ListModelsUseCaseDTO>
 {
-  constructor(private modelRepository: IModelRepository<IdType>) {}
+  constructor(private modelRepository: IModelRepository) {}
 
-  async use(): Promise<Model<IdType>[]> {
+  async use(): Promise<Model[]> {
     return this.modelRepository.getAll();
   }
 }

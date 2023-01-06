@@ -1,20 +1,21 @@
-import IdProvider from '../../provider/idProvider/IdProvider';
+import { v4 as uuidV4 } from 'uuid';
 
-export abstract class Entity<IdType> {
-  id: IdType;
-  createdAt?: Date;
-  updatedAT?: Date;
+export abstract class Entity<C> {
+  id: string;
+  createdAt: Date;
+  updatedAT: Date;
 
-  constructor(idProvider: IdProvider<IdType>, id?: IdType) {
+  constructor(source: Omit<C, 'id' | 'createdAt' | 'updatedAT'>, id?: string) {
     const date = new Date();
 
     if (!id) {
-      this.id = idProvider.generateId();
+      this.id = uuidV4();
       this.createdAt = date;
       this.updatedAT = date;
     } else {
-      this.id = id;
       this.updatedAT = date;
     }
+
+    Object.assign(this, source);
   }
 }

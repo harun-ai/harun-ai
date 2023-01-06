@@ -5,19 +5,19 @@ import IModelRepository from '../../../repository/modelRepository/IModelReposito
 import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
-export type CreateCompletionUseCaseDTO<IdType> = {
+export type CreateCompletionUseCaseDTO = {
   Request: {
-    modelId: IdType;
+    modelId: string;
     inputs: Record<string, unknown>;
   };
   Response: unknown;
 };
 
-export default class CreateCompletionUseCase<IdType>
-  implements IUseCase<CreateCompletionUseCaseDTO<IdType>>
+export default class CreateCompletionUseCase
+  implements IUseCase<CreateCompletionUseCaseDTO>
 {
   constructor(
-    private modelRepository: IModelRepository<IdType>,
+    private modelRepository: IModelRepository,
     private modelPredictionProvider: IModelPredictionProvider,
     private templateStringProvider: ITemplateStringProvider,
     private shemaProvider: ISchemaProvider
@@ -25,7 +25,7 @@ export default class CreateCompletionUseCase<IdType>
   async use({
     modelId,
     inputs,
-  }: CreateCompletionUseCaseDTO<IdType>['Request']): Promise<Model<IdType>> {
+  }: CreateCompletionUseCaseDTO['Request']): Promise<Model> {
     const model = await this.modelRepository.get(modelId);
 
     await this.shemaProvider.validate(inputs, model.inputSchema);

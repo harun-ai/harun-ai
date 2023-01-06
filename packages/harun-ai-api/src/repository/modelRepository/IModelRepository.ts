@@ -1,9 +1,9 @@
 import Model from '../../core/entities/Model';
 
-export default interface IModelRepository<IdType> {
-  getAll(): Promise<Model<IdType>[]>;
-  get(modelId: IdType): Promise<Model<IdType>>;
-  update(model: Model<IdType>): Promise<Model<IdType>>;
-  save(model: Model<IdType>): Promise<Model<IdType>>;
-  delete(modelId: IdType): Promise<void>;
+export default interface IModelRepository {
+  getAll(): Promise<Model[]>;
+  get(modelId: string): Promise<Model>;
+  update(model: Partial<Omit<Model, 'id'>>): Promise<Model>;
+  save(model: Omit<Model, 'id'>): Promise<Model>;
+  delete(modelId: string): Promise<void>;
 }

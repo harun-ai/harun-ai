@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Veja https://aka.ms/tsconfig.json para mais informações */
+    "strict": true,
     "target": "esnext",
     "lib": [
       "esnext",

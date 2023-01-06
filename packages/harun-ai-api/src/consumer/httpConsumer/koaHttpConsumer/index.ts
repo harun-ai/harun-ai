@@ -7,17 +7,15 @@ import JsonSchemaProvider from 'packages/harun-ai-api/src/provider/schemaProvide
 import MustacheTemplateStringProvider from 'packages/harun-ai-api/src/provider/templateStringProvider/MustacheTemplateStringProvider';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
-import UuidProvider from '../../../provider/idProvider/UuidProvider';
 import StaticModelRepository from '../../../repository/modelRepository/staticModelRepository';
 
-const idProvider = new UuidProvider();
 const schemaProvider = new JsonSchemaProvider();
 const templateStringProvider = new MustacheTemplateStringProvider();
 const modelPredictionProvider = new OpenAIModelPredictionProvider(
   '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'
 );
 
-const modelRepository = new StaticModelRepository(idProvider, schemaProvider);
+const modelRepository = new StaticModelRepository(schemaProvider);
 
 export const listModelsUseCase = new ListModelsUseCase(modelRepository);
 export const getModelUseCase = new GetModelUseCase(modelRepository);

@@ -2,24 +2,22 @@ import IModelRepository from '../../../repository/modelRepository/IModelReposito
 import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
-export type CreateModelUseCaseDTO<IdType> = {
+export type CreateModelUseCaseDTO = {
   Request: {
-    id: IdType;
-    name?: string;
-    inputSchema?: object;
-    text?: string;
-    description?: string;
+    name: string;
+    model: string;
+    inputSchema: Record<string, unknown>;
+    prompt: string;
+    description: string;
   };
-  Response: Model<IdType>;
+  Response: Model;
 };
 
-export default class CreateModelUseCase<IdType>
-  implements IUseCase<CreateModelUseCaseDTO<IdType>>
+export default class createModelUseCase
+  implements IUseCase<CreateModelUseCaseDTO>
 {
-  constructor(private modelRepository: IModelRepository<IdType>) {}
-  async use(
-    model: CreateModelUseCaseDTO<IdType>['Request']
-  ): Promise<Model<IdType>> {
+  constructor(private modelRepository: IModelRepository) {}
+  async use(model: CreateModelUseCaseDTO['Request']): Promise<Model> {
     return this.modelRepository.save(model);
   }
 }

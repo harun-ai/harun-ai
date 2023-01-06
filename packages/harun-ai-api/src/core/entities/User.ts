@@ -1,8 +1,8 @@
 import { Entity } from './Entity';
 import Model from './Model';
 
-export default class User<IdType> extends Entity<IdType> {
+export default class User extends Entity<User> {
   name?: string;
   email?: string;
-  models?: Model<IdType>[];
+  models?: Model[];
 }

@@ -1,29 +1,35 @@
 import { ParameterizedContext } from 'koa';
+import z from 'zod';
+
 import InvalidInputSchemaError from 'packages/harun-ai-api/src/core/errors/InvalidInputSchemaError';
 import Model from '../../../../../core/entities/Model';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
 import UpdateModelUseCase from '../../../../../core/useCase/model/updateModelUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
-export default class UpdateModelService<IdType>
-  implements IService<Model<IdType>>
-{
-  constructor(private updateModelUseCase: UpdateModelUseCase<IdType>) {}
+export default class UpdateModelService implements IService<Model> {
+  constructor(private updateModelUseCase: UpdateModelUseCase) {}
   async execute(
     ctx: ParameterizedContext
-  ): Promise<ServiceDTO<Model<IdType>>['Response']> {
-    const model = ctx.request.body as Model<IdType>;
-
-    if (!model.id) {
-      return {
-        error: 'Model id is required',
-        statusCode: StatusCode.BAD_REQUEST,
-      };
-    }
-
+  ): Promise<ServiceDTO<Model>['Response']> {
     try {
+      const params = await z
+        .object({
+          id: z.string({ required_error: "'id' is required" }),
+          model: z.string().optional(),
+          description: z.string().optional(),
+          inputSchema: z.record(z.unknown()).optional(),
+          prompt: z.string().optional(),
+          temperature: z.number().optional(),
+          maxTokens: z.number().optional(),
+          topP: z.number().optional(),
+          frequencyPenalty: z.number().optional(),
+          presencePenalty: z.number().optional(),
+        })
+        .parseAsync(ctx.request.body);
+
       return {
-        success: await this.updateModelUseCase.use(model),
+        success: await this.updateModelUseCase.use(params),
         statusCode: StatusCode.OK,
       };
     } catch (error) {
@@ -37,8 +43,13 @@ export default class UpdateModelService<IdType>
           error: error.message,
           statusCode: StatusCode.BAD_REQUEST,
         };
+      } else if (error instanceof z.ZodError) {
+        return {
+          error: error.errors.map(error => error.message).join(', '),
+          statusCode: StatusCode.BAD_REQUEST,
+        };
       }
-      console.log(error.message);
+      console.error(error);
       return {
         error: 'Unexpect error',
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,

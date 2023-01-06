@@ -2,20 +2,16 @@ import IModelRepository from '../../../repository/modelRepository/IModelReposito
 import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
-export type GetModelUseCaseDTO<IdType> = {
+export type GetModelUseCaseDTO = {
   Request: {
-    modelId: IdType;
+    modelId: string;
   };
-  Response: Model<IdType>;
+  Response: Model;
 };
 
-export default class GetModelUseCase<IdType>
-  implements IUseCase<GetModelUseCaseDTO<IdType>>
-{
-  constructor(private modelRepository: IModelRepository<IdType>) {}
-  async use({
-    modelId,
-  }: GetModelUseCaseDTO<IdType>['Request']): Promise<Model<IdType>> {
+export default class GetModelUseCase implements IUseCase<GetModelUseCaseDTO> {
+  constructor(private modelRepository: IModelRepository) {}
+  async use({ modelId }: GetModelUseCaseDTO['Request']): Promise<Model> {
     return this.modelRepository.get(modelId);
   }
 }

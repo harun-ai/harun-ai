@@ -2,21 +2,15 @@ import Model from '../../core/entities/Model';
 import InvalidInputSchemaError from '../../core/errors/InvalidInputSchemaError';
 import ModelAlreadyExistsError from '../../core/errors/ModelAlreadyExistsError';
 import ModelNotFoundError from '../../core/errors/ModelNotFoundError';
-import IdProvider from '../../provider/idProvider/IdProvider';
 import ISchemaProvider from '../../provider/schemaProvider/ISchemaProvider';
 import IModelRepository from './IModelRepository';
 
-export default class StaticModelRepository<IdType>
-  implements IModelRepository<IdType>
-{
-  private models: Model<IdType>[] = [];
+export default class StaticModelRepository implements IModelRepository {
+  private models: Model[] = [];
 
-  constructor(
-    private idProvider: IdProvider<IdType>,
-    private schemaProvider: ISchemaProvider
-  ) {
+  constructor(private schemaProvider: ISchemaProvider) {
     this.models.push(
-      new Model(this.idProvider, {
+      new Model({
         name: 'Atas de Reunião',
         model: 'text-davinci-003',
         description: 'Construir uma ata de reunião ou um relato de um encontro',
@@ -49,7 +43,7 @@ export default class StaticModelRepository<IdType>
       })
     );
     this.models.push(
-      new Model(this.idProvider, {
+      new Model({
         name: 'Explique a uma criança',
         model: 'text-davinci-003',
         description:
@@ -74,11 +68,11 @@ export default class StaticModelRepository<IdType>
     );
   }
 
-  async getAll(): Promise<Model<IdType>[]> {
+  async getAll(): Promise<Model[]> {
     return this.models;
   }
 
-  async get(modelId: IdType): Promise<Model<IdType>> {
+  async get(modelId: string): Promise<Model> {
     const model = this.models.find(model => model.id === modelId);
 
     if (model) {
@@ -87,15 +81,15 @@ export default class StaticModelRepository<IdType>
     throw new ModelNotFoundError(`Model id: ${modelId} not found`);
   }
 
-  async update(model: Model<IdType>): Promise<Model<IdType>> {
-    const index = this.models.findIndex(item => item.id === model.id);
+  async update(params: Partial<Model>): Promise<Model> {
+    const index = this.models.findIndex(item => item.id === params.id);
 
     if (index === -1)
-      throw new ModelNotFoundError(`Model id: ${model.id} not found`);
+      throw new ModelNotFoundError(`Model id: ${params.id} not found`);
 
-    if (model.inputSchema) {
+    if (params.inputSchema) {
       try {
-        await this.schemaProvider.validateSchema(model.inputSchema);
+        await this.schemaProvider.validateSchema(params.inputSchema);
       } catch (error) {
         if (error instanceof Error)
           throw new InvalidInputSchemaError(error.message);
@@ -104,14 +98,14 @@ export default class StaticModelRepository<IdType>
       }
     }
 
-    const updatedModel = Object.assign(this.models[index], model);
+    const updatedModel = Object.assign(this.models[index], params);
 
-    this.models[index] = updatedModel;
+    this.models[index] = new Model(updatedModel, updatedModel.id);
 
-    return updatedModel;
+    return this.models[index];
   }
 
-  async save(model: Model<IdType>): Promise<Model<IdType>> {
+  async save(model: Model): Promise<Model> {
     const index = this.models.findIndex(
       item => item.name === model.name || item.id === model.id
     );
@@ -132,14 +126,14 @@ export default class StaticModelRepository<IdType>
       }
     }
 
-    const newModel = new Model(this.idProvider, model);
+    const newModel = new Model(model);
 
     this.models.push(newModel);
 
     return newModel;
   }
 
-  async delete(modelId: IdType): Promise<void> {
+  async delete(modelId: string): Promise<void> {
     const index = this.models.findIndex(model => model.id === modelId);
 
     if (index === -1)

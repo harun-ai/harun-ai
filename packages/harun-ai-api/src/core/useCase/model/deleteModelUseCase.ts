@@ -1,20 +1,18 @@
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
 import IUseCase from '../IUseCase';
 
-export type DeleteModelUseCaseDTO<IdType> = {
+export type DeleteModelUseCaseDTO = {
   Request: {
-    modelId: IdType;
+    modelId: string;
   };
   Response: void;
 };
 
-export default class DeleteModelUseCase<IdType>
-  implements IUseCase<DeleteModelUseCaseDTO<IdType>>
+export default class DeleteModelUseCase
+  implements IUseCase<DeleteModelUseCaseDTO>
 {
-  constructor(private modelRepository: IModelRepository<IdType>) {}
-  async use({
-    modelId,
-  }: DeleteModelUseCaseDTO<IdType>['Request']): Promise<void> {
+  constructor(private modelRepository: IModelRepository) {}
+  async use({ modelId }: DeleteModelUseCaseDTO['Request']): Promise<void> {
     return this.modelRepository.delete(modelId);
   }
 }
