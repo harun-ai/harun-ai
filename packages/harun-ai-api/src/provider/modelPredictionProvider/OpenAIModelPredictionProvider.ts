@@ -15,10 +15,10 @@ export default class OpenAIModelPredictionProvider
     model,
     prompt,
     temperature,
-    maxTokens,
-    topP,
-    frequencyPenalty,
-    presencyPenalty,
+    maxTokens: max_tokens,
+    topP: top_p,
+    frequencyPenalty: frequency_penalty,
+    presencyPenalty: presence_penalty,
   }: {
     model: string;
     prompt?: string;
@@ -27,16 +27,16 @@ export default class OpenAIModelPredictionProvider
     topP?: number;
     frequencyPenalty?: number;
     presencyPenalty?: number;
-  }): Promise<any> {
+  }): Promise<unknown> {
     const response = await this.openai.createCompletion({
       model,
       prompt,
       temperature,
-      max_tokens: maxTokens,
-      top_p: topP,
-      n: 5,
-      frequency_penalty: frequencyPenalty,
-      presence_penalty: presencyPenalty,
+      max_tokens,
+      top_p,
+      frequency_penalty,
+      presence_penalty,
+      n: 3,
     });
 
     return response.data.choices;

@@ -8,7 +8,7 @@ export type GetPredictionDTO = {
     frequencyPenalty?: number;
     presencyPenalty?: number;
   };
-  Response: any;
+  Response: unknown;
 };
 
 export default interface IModelPredictionProvider {

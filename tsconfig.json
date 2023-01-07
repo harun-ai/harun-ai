@@ -12,7 +12,7 @@
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "moduleResolution": "node",
-    "baseUrl": ".",
+    // "baseUrl": ".",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
