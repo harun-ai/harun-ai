@@ -9,7 +9,7 @@ export default class User extends Entity {
   models?: Model[];
 
   constructor(
-    source: Omit<Model, 'id' | 'createdAt' | 'updatedAT'>,
+    source: Omit<Model, 'id' | 'createdAt' | 'updatedAt'>,
     id?: string
   ) {
     super();
@@ -18,9 +18,9 @@ export default class User extends Entity {
     if (!id) {
       this.id = uuidV4();
       this.createdAt = date;
-      this.updatedAT = date;
+      this.updatedAt = date;
     } else {
-      this.updatedAT = date;
+      this.updatedAt = date;
     }
 
     Object.assign(this, source);

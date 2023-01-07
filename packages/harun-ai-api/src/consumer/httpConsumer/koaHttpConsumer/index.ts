@@ -1,18 +1,19 @@
-import CreateCompletionUseCase from 'packages/harun-ai-api/src/core/useCase/model/createCompletionUseCase';
-import CreateModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/createModelUseCase';
-import DeleteModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/deleteModelUseCase';
-import UpdateModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/updateModelUseCase';
-import OpenAIModelPredictionProvider from 'packages/harun-ai-api/src/provider/modelPredictionProvider/OpenAIModelPredictionProvider';
-import JsonSchemaProvider from 'packages/harun-ai-api/src/provider/schemaProvider/JsonSchemaProvider';
-import MustacheTemplateStringProvider from 'packages/harun-ai-api/src/provider/templateStringProvider/MustacheTemplateStringProvider';
+import CreateCompletionUseCase from '../../../core/useCase/model/createCompletionUseCase';
+import CreateModelUseCase from '../../../core/useCase/model/createModelUseCase';
+import DeleteModelUseCase from '../../../core/useCase/model/deleteModelUseCase';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
+import UpdateModelUseCase from '../../../core/useCase/model/updateModelUseCase';
+import { OPENAI_API_KEY } from '../../../envConfig';
+import OpenAIModelPredictionProvider from '../../../provider/modelPredictionProvider/OpenAIModelPredictionProvider';
+import JsonSchemaProvider from '../../../provider/schemaProvider/JsonSchemaProvider';
+import MustacheTemplateStringProvider from '../../../provider/templateStringProvider/MustacheTemplateStringProvider';
 import StaticModelRepository from '../../../repository/modelRepository/staticModelRepository';
 
 const schemaProvider = new JsonSchemaProvider();
 const templateStringProvider = new MustacheTemplateStringProvider();
 const modelPredictionProvider = new OpenAIModelPredictionProvider(
-  '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'
+  OPENAI_API_KEY
 );
 
 const modelRepository = new StaticModelRepository(schemaProvider);

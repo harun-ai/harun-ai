@@ -1,4 +1,7 @@
 import { cleanEnv, str } from 'envalid';
+import { config } from 'dotenv';
+
+config();
 
 const getEnvs = () => {
   return cleanEnv(process.env, {

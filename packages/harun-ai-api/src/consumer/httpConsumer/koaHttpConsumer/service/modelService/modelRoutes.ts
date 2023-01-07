@@ -36,7 +36,7 @@ modelRouter.post('/model', async ctx => {
   ctx.body = response;
 });
 
-modelRouter.put('/model', async ctx => {
+modelRouter.put('/model/:modelId', async ctx => {
   const response = await new UpdateModelService(updateModelUseCase).execute(
     ctx
   );
@@ -50,7 +50,7 @@ modelRouter.delete('/model/:modelId', async ctx => {
   ctx.body = response;
 });
 
-modelRouter.post('/model/completion', async ctx => {
+modelRouter.post('/model/completion/:modelId', async ctx => {
   const response = await new CreateCompletionService(
     createCompletionUseCase
   ).execute(ctx);

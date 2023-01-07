@@ -13,7 +13,7 @@ export type CreateModelUseCaseDTO = {
   Response: Model;
 };
 
-export default class createModelUseCase
+export default class CreateModelUseCase
   implements IUseCase<CreateModelUseCaseDTO>
 {
   constructor(private modelRepository: IModelRepository) {}

@@ -1,11 +1,11 @@
 import { ParameterizedContext } from 'koa';
 import z from 'zod';
 
-import InvalidInputSchemaError from 'packages/harun-ai-api/src/core/errors/InvalidInputSchemaError';
-import ModelAlreadyExistsError from 'packages/harun-ai-api/src/core/errors/ModelAlreadyExistsError';
-import CreateModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/createModelUseCase';
 import Model from '../../../../../core/entities/Model';
+import InvalidInputSchemaError from '../../../../../core/errors/InvalidInputSchemaError';
+import ModelAlreadyExistsError from '../../../../../core/errors/ModelAlreadyExistsError';
 import IService, { ServiceDTO, StatusCode } from '../IService';
+import CreateModelUseCase from '../../../../../core/useCase/model/createModelUseCase';
 
 export default class CreateModelService implements IService<Model> {
   constructor(private createModelUseCase: CreateModelUseCase) {}
@@ -23,7 +23,7 @@ export default class CreateModelService implements IService<Model> {
           inputSchema: z.record(z.unknown(), {
             required_error: "'inputSchema' is required",
           }),
-          prompt: z.string({ required_error: "'name' is required" }),
+          prompt: z.string({ required_error: "'prompt' is required" }),
           temperature: z.number().optional(),
           maxTokens: z.number().optional(),
           topP: z.number().optional(),

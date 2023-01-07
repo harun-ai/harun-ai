@@ -15,7 +15,7 @@ export default class GetModelService implements IService<Model> {
       const params = z
         .object({
           modelId: z
-            .string({ required_error: 'Model id ias asdfjiasfasjf' })
+            .string({ required_error: "'modelId' is required" })
             .uuid('Invalid uuid'),
         })
         .parse(ctx.params);

@@ -1,7 +1,7 @@
 import { ParameterizedContext } from 'koa';
 import z from 'zod';
-import DeleteModelUseCase from 'packages/harun-ai-api/src/core/useCase/model/deleteModelUseCase';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
+import DeleteModelUseCase from '../../../../../core/useCase/model/deleteModelUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
 export default class DeleteModelService implements IService<void> {

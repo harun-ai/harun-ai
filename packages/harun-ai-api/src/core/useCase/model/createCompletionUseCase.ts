@@ -1,8 +1,7 @@
-import IModelPredictionProvider from 'packages/harun-ai-api/src/provider/modelPredictionProvider/IModelPredictionProvider';
-import ISchemaProvider from 'packages/harun-ai-api/src/provider/schemaProvider/ISchemaProvider';
-import ITemplateStringProvider from 'packages/harun-ai-api/src/provider/templateStringProvider/ITemplateStringProvider';
+import IModelPredictionProvider from '../../../provider/modelPredictionProvider/IModelPredictionProvider';
+import ISchemaProvider from '../../../provider/schemaProvider/ISchemaProvider';
+import ITemplateStringProvider from '../../../provider/templateStringProvider/ITemplateStringProvider';
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
-import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
 export type CreateCompletionUseCaseDTO = {
@@ -25,7 +24,7 @@ export default class CreateCompletionUseCase
   async use({
     modelId,
     inputs,
-  }: CreateCompletionUseCaseDTO['Request']): Promise<Model> {
+  }: CreateCompletionUseCaseDTO['Request']): Promise<unknown> {
     const model = await this.modelRepository.get(modelId);
 
     await this.shemaProvider.validate(inputs, model.inputSchema);

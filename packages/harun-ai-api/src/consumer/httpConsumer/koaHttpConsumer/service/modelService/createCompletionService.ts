@@ -1,31 +1,35 @@
 import { ParameterizedContext } from 'koa';
 import z from 'zod';
 
-import InvalidInputParamsError from 'packages/harun-ai-api/src/core/errors/InvalidInputParamsError';
-import CreateCompletionUseCase from 'packages/harun-ai-api/src/core/useCase/model/createCompletionUseCase';
-import Model from '../../../../../core/entities/Model';
+import InvalidInputParamsError from '../../../../../core/errors/InvalidInputParamsError';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
+import CreateCompletionUseCase from '../../../../../core/useCase/model/createCompletionUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
-export default class CreateCompletionService implements IService<Model> {
+export default class CreateCompletionService implements IService<unknown> {
   constructor(private createCompletionUseCase: CreateCompletionUseCase) {}
   async execute(
     ctx: ParameterizedContext
-  ): Promise<ServiceDTO<Model>['Response']> {
+  ): Promise<ServiceDTO<unknown>['Response']> {
     try {
       const params = await z
         .object({
-          modelId: z
-            .string({ required_error: "'modelId' is required asdads" })
-            .uuid("invalid 'modelId'"),
           inputs: z.record(z.unknown(), {
             required_error: "'inputs' is required",
           }),
         })
         .parseAsync(ctx.request.body);
 
+      const { modelId } = await z
+        .object({
+          modelId: z
+            .string({ required_error: "'modelId' is required asdads" })
+            .uuid("invalid 'modelId'"),
+        })
+        .parseAsync(ctx.params);
+
       return {
-        success: await this.createCompletionUseCase.use(params),
+        success: await this.createCompletionUseCase.use({ ...params, modelId }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {

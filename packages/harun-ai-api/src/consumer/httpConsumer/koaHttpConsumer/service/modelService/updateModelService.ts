@@ -1,8 +1,8 @@
 import { ParameterizedContext } from 'koa';
 import z from 'zod';
 
-import InvalidInputSchemaError from 'packages/harun-ai-api/src/core/errors/InvalidInputSchemaError';
 import Model from '../../../../../core/entities/Model';
+import InvalidInputSchemaError from '../../../../../core/errors/InvalidInputSchemaError';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
 import UpdateModelUseCase from '../../../../../core/useCase/model/updateModelUseCase';
 import IService, { ServiceDTO, StatusCode } from '../IService';
@@ -15,7 +15,6 @@ export default class UpdateModelService implements IService<Model> {
     try {
       const params = await z
         .object({
-          id: z.string({ required_error: "'id' is required" }),
           model: z.string().optional(),
           description: z.string().optional(),
           inputSchema: z.record(z.unknown()).optional(),
@@ -28,8 +27,16 @@ export default class UpdateModelService implements IService<Model> {
         })
         .parseAsync(ctx.request.body);
 
+      const { modelId } = await z
+        .object({
+          modelId: z
+            .string({ required_error: "'modelId' is required" })
+            .uuid("Invalid 'modelId'"),
+        })
+        .parseAsync(ctx.params);
+
       return {
-        success: await this.updateModelUseCase.use(params),
+        success: await this.updateModelUseCase.use({ ...params, id: modelId }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {
