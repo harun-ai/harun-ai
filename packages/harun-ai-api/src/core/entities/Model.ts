@@ -1,9 +1,10 @@
-import { v4 as uuidV4 } from 'uuid';
-
-import { Entity } from './Entity';
 import User from './User';
 
-export default class Model extends Entity {
+export default class Model {
+  id: string;
+  createdAt = new Date();
+  updatedAt = new Date();
+  private active = true;
   name: string;
   model: string;
   description: string;
@@ -14,23 +15,51 @@ export default class Model extends Entity {
   topP?: number;
   frequencyPenalty?: number;
   presencePenalty?: number;
-  user?: User;
+  user?: Partial<User>;
 
   constructor(
-    source: Omit<Model, 'id' | 'createdAt' | 'updatedAt'>,
-    id?: string
+    params: Omit<
+      Model,
+      | 'createdAt'
+      | 'updatedAt'
+      | 'update'
+      | 'active'
+      | 'update'
+      | 'activate'
+      | 'deactivate'
+      | 'isActive'
+    >
   ) {
-    super();
-    const date = new Date();
+    Object.assign(this, params);
+  }
 
-    if (!id) {
-      this.id = uuidV4();
-      this.createdAt = date;
-      this.updatedAt = date;
-    } else {
-      this.updatedAt = date;
-    }
+  update(
+    params: Partial<
+      Omit<
+        Model,
+        | 'createdAt'
+        | 'updatedAt'
+        | 'update'
+        | 'update'
+        | 'activate'
+        | 'deactivate'
+        | 'isActive'
+      >
+    >
+  ) {
+    this.updatedAt = new Date();
+    Object.assign(this, params);
+  }
 
-    Object.assign(this, source);
+  activate() {
+    this.active = true;
+  }
+
+  deactivate() {
+    this.active = false;
+  }
+
+  isActive(): boolean {
+    return this.active;
   }
 }

@@ -36,7 +36,7 @@ export default class UpdateModelService implements IService<Model> {
         .parseAsync(ctx.params);
 
       return {
-        success: await this.updateModelUseCase.use({ ...params, id: modelId }),
+        success: await this.updateModelUseCase.use({ params, modelId }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {

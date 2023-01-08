@@ -12,7 +12,7 @@
     "start": "node .",
     "build:koa": "esbuild src/consumer/httpConsumer/koaHttpConsumer/server.ts --bundle --minify --outfile=dist/bundle.js --platform=node --target=es2022 --analyze",
     "postinstall": "yarn build:koa",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "devDependencies": {
     "@swc/core": "^1.3.25",

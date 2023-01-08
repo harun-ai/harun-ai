@@ -1,9 +1,10 @@
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
+import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
 export type DeleteModelUseCaseDTO = {
   Request: {
-    modelId: string;
+    modelId: Model['id'];
   };
   Response: void;
 };

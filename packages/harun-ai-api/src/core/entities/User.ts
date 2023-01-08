@@ -1,28 +1,55 @@
-import { v4 as uuidV4 } from 'uuid';
-
-import { Entity } from './Entity';
 import Model from './Model';
 
-export default class User extends Entity {
-  name?: string;
-  email?: string;
-  models?: Model[];
+export default class User {
+  id: string;
+  createdAt = new Date();
+  updatedAt = new Date();
+  private verified = false;
+  name: string;
+  email: string;
+  password?: string;
+  models?: Partial<Model>[];
 
   constructor(
-    source: Omit<Model, 'id' | 'createdAt' | 'updatedAt'>,
-    id?: string
+    params: Omit<
+      User,
+      | 'createdAt'
+      | 'updatedAt'
+      | 'update'
+      | 'isVerified'
+      | 'setVerified'
+      | 'setUnverified'
+    >
   ) {
-    super();
-    const date = new Date();
+    Object.assign(this, params);
+  }
 
-    if (!id) {
-      this.id = uuidV4();
-      this.createdAt = date;
-      this.updatedAt = date;
-    } else {
-      this.updatedAt = date;
-    }
+  update(
+    params: Partial<
+      Omit<
+        User,
+        | 'createdAt'
+        | 'updatedAt'
+        | 'update'
+        | 'isVerified'
+        | 'setVerified'
+        | 'setUnverified'
+      >
+    >
+  ) {
+    this.updatedAt = new Date();
+    Object.assign(this, params);
+  }
 
-    Object.assign(this, source);
+  isVerified(): boolean {
+    return this.verified;
+  }
+
+  setVerified() {
+    this.verified = true;
+  }
+
+  setUnverified() {
+    this.verified = false;
   }
 }

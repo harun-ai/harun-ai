@@ -12,11 +12,9 @@ export default class CreateCompletionService implements IService<unknown> {
     ctx: ParameterizedContext
   ): Promise<ServiceDTO<unknown>['Response']> {
     try {
-      const params = await z
-        .object({
-          inputs: z.record(z.unknown(), {
-            required_error: "'inputs' is required",
-          }),
+      const inputs = await z
+        .record(z.unknown(), {
+          required_error: "'body' is required",
         })
         .parseAsync(ctx.request.body);
 
@@ -29,7 +27,7 @@ export default class CreateCompletionService implements IService<unknown> {
         .parseAsync(ctx.params);
 
       return {
-        success: await this.createCompletionUseCase.use({ ...params, modelId }),
+        success: await this.createCompletionUseCase.use({ modelId, inputs }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {

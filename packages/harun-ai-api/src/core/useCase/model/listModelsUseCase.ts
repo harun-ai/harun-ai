@@ -3,7 +3,7 @@ import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
 export type ListModelsUseCaseDTO = {
-  Request: object;
+  Request: void;
   Response: Partial<Model>[];
 };
 

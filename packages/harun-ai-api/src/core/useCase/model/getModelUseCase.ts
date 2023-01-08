@@ -4,7 +4,7 @@ import IUseCase from '../IUseCase';
 
 export type GetModelUseCaseDTO = {
   Request: {
-    modelId: string;
+    modelId: Model['id'];
   };
   Response: Model;
 };

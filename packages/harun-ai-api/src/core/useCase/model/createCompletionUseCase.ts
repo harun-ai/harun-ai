@@ -2,11 +2,12 @@ import IModelPredictionProvider from '../../../provider/modelPredictionProvider/
 import ISchemaProvider from '../../../provider/schemaProvider/ISchemaProvider';
 import ITemplateStringProvider from '../../../provider/templateStringProvider/ITemplateStringProvider';
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
+import Model from '../../entities/Model';
 import IUseCase from '../IUseCase';
 
 export type CreateCompletionUseCaseDTO = {
   Request: {
-    modelId: string;
+    modelId: Model['id'];
     inputs: Record<string, unknown>;
   };
   Response: unknown;
