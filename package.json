@@ -18,7 +18,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "yarn workspace @harun-ai/harun-ai-api build"
+    "build": "yarn workspace @harun-ai/harun-ai-api build",
+    "start": "yarn workspace @harun-ai/harun-ai-api start"
   },
   "devDependencies": {
     "@jest/globals": "^29.3.1",
