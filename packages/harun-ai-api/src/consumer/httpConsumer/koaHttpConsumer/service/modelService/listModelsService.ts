@@ -12,8 +12,9 @@ export default class ListModelsService implements IService<Partial<Model>[]> {
       };
     } catch (error) {
       console.error(error);
+
       return {
-        error: 'Unexpect error',
+        error: { code: 'INTERNAL_SERVER_ERROR', message: 'Unexpect error' },
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,
       };
     }

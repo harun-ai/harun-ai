@@ -1,24 +1,12 @@
-import IEncryptorProvider from '../../../provider/encryptorProvider/IEncryptorProvider';
+import IEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import IdProvider from '../../../provider/idProvider/IdProvider';
 import IUserRepository from '../../../repository/userRepository/IUserRepository';
 import User from '../../entities/User';
 import IUseCase from '../IUseCase';
 
 export type CreateUserUseCaseDTO = {
-  Request: Omit<
-    User,
-    | 'id'
-    | 'createdAt'
-    | 'updatedAt'
-    | 'update'
-    | 'isVerified'
-    | 'setVerified'
-    | 'setUnverified'
-  >;
-  Response: Omit<
-    User,
-    'password' | 'update' | 'isVerified' | 'setVerified' | 'setUnverified'
-  >;
+  Request: Omit<User, 'id' | 'createdAt' | 'updatedAt' | 'verified'>;
+  Response: Omit<User, 'password'>;
 };
 
 export default class CreateUserUseCase
@@ -41,9 +29,7 @@ export default class CreateUserUseCase
 
     const user = new User({ ...request, id });
 
-    const response = { ...(await this.userRepository.save(user)) };
-
-    delete response.password;
+    const { password, ...response } = await this.userRepository.save(user);
 
     return response;
   }

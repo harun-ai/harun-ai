@@ -42,23 +42,28 @@ export default class UpdateModelService implements IService<Model> {
     } catch (error) {
       if (error instanceof ModelNotFoundError) {
         return {
-          error: error.message,
+          error: { code: error.name, message: error.message },
           statusCode: StatusCode.NOT_FOUND,
         };
       } else if (error instanceof InvalidInputSchemaError) {
         return {
-          error: error.message,
+          error: { code: error.name, message: error.message },
           statusCode: StatusCode.BAD_REQUEST,
         };
       } else if (error instanceof z.ZodError) {
         return {
-          error: error.errors.map(error => error.message).join(', '),
+          error: {
+            code: error.name,
+            message: error.errors.map(error => error.message).join(', '),
+          },
           statusCode: StatusCode.BAD_REQUEST,
         };
       }
+
       console.error(error);
+
       return {
-        error: 'Unexpect error',
+        error: { code: 'INTERNAL_SERVER_ERROR', message: 'Unexpect error' },
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,
       };
     }

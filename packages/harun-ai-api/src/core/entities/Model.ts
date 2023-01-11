@@ -4,62 +4,21 @@ export default class Model {
   id: string;
   createdAt = new Date();
   updatedAt = new Date();
-  private active = true;
+  active = true;
   name: string;
   model: string;
   description: string;
-  inputSchema: Record<string, unknown>;
+  inputSchema: any;
   prompt: string;
-  temperature?: number;
-  maxTokens?: number;
-  topP?: number;
-  frequencyPenalty?: number;
-  presencePenalty?: number;
-  user?: Partial<User>;
+  temperature: number | null;
+  maxTokens: number | null;
+  topP: number | null;
+  frequencyPenalty: number | null;
+  presencePenalty: number | null;
+  userId: User['id'];
+  User?: User;
 
-  constructor(
-    params: Omit<
-      Model,
-      | 'createdAt'
-      | 'updatedAt'
-      | 'update'
-      | 'active'
-      | 'update'
-      | 'activate'
-      | 'deactivate'
-      | 'isActive'
-    >
-  ) {
+  constructor(params: Omit<Model, 'createdAt' | 'updatedAt' | 'active'>) {
     Object.assign(this, params);
-  }
-
-  update(
-    params: Partial<
-      Omit<
-        Model,
-        | 'createdAt'
-        | 'updatedAt'
-        | 'update'
-        | 'update'
-        | 'activate'
-        | 'deactivate'
-        | 'isActive'
-      >
-    >
-  ) {
-    this.updatedAt = new Date();
-    Object.assign(this, params);
-  }
-
-  activate() {
-    this.active = true;
-  }
-
-  deactivate() {
-    this.active = false;
-  }
-
-  isActive(): boolean {
-    return this.active;
   }
 }

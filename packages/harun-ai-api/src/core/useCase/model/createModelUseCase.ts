@@ -6,16 +6,7 @@ import InvalidInputSchemaError from '../../errors/InvalidInputSchemaError';
 import IUseCase from '../IUseCase';
 
 export type CreateModelUseCaseDTO = {
-  Request: Omit<
-    Model,
-    | 'id'
-    | 'createdAt'
-    | 'updatedAt'
-    | 'update'
-    | 'activate'
-    | 'deactivate'
-    | 'isActive'
-  >;
+  Request: Omit<Model, 'id' | 'createdAt' | 'updatedAt' | 'active'>;
   Response: Model;
 };
 
@@ -27,9 +18,9 @@ export default class CreateModelUseCase
     private schemaProvider: ISchemaProvider,
     private idProvider: IdProvider
   ) {}
-  async use(request: CreateModelUseCaseDTO['Request']): Promise<Model> {
+  async use(params: CreateModelUseCaseDTO['Request']): Promise<Model> {
     try {
-      await this.schemaProvider.validateSchema(request.inputSchema);
+      await this.schemaProvider.validateSchema(params.inputSchema);
     } catch (error) {
       if (error instanceof Error)
         throw new InvalidInputSchemaError(error.message);
@@ -40,7 +31,7 @@ export default class CreateModelUseCase
     const id = await this.idProvider.generateId();
 
     const model = new Model({
-      ...request,
+      ...params,
       id,
     });
 

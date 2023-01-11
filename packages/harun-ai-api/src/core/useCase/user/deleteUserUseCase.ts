@@ -15,6 +15,6 @@ export default class DeleteUserUseCase
   constructor(private userRepository: IUserRepository) {}
 
   async use({ userId }: { userId: User['id'] }): Promise<void> {
-    return this.userRepository.delete(userId);
+    await this.userRepository.delete(userId);
   }
 }

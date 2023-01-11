@@ -1,16 +1,17 @@
-import IEncryptorProvider from '../../../provider/encryptorProvider/IEncryptorProvider';
+import IEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import IUserRepository from '../../../repository/userRepository/IUserRepository';
+import Entity from '../../entities/Entity';
 import User from '../../entities/User';
 import UserPasswordDoNotMatchError from '../../errors/UserPasswordDoNotMatchError';
 import IUseCase from '../IUseCase';
 
 export type UpdateUserUseCaseDTO = {
   Request: {
-    params: Partial<Omit<User, 'id' | 'UpdatedAt' | 'updatedAt' | 'password'>>;
+    params: Partial<Omit<User, 'id' | 'UpdatedAt' | 'updatedAt'>>;
     userId: User['id'];
     userPassword: string;
   };
-  Response: User;
+  Response: Omit<User, 'password'>;
 };
 
 export default class UpdateUserUseCase
@@ -25,7 +26,9 @@ export default class UpdateUserUseCase
     params,
     userId,
     userPassword,
-  }: UpdateUserUseCaseDTO['Request']): Promise<User> {
+  }: UpdateUserUseCaseDTO['Request']): Promise<
+    UpdateUserUseCaseDTO['Response']
+  > {
     const user = await this.userRepository.get(userId);
 
     const validPassword = await this.encryptorProvider.compare(
@@ -33,20 +36,18 @@ export default class UpdateUserUseCase
       user.password as string
     );
 
-    delete user.password;
-
     if (!validPassword)
       throw new UserPasswordDoNotMatchError('Password do not match');
 
     if (params.email) {
-      user.setUnverified();
+      user.verified = false;
     }
 
-    user.update(params);
+    Entity.update(params, user);
 
-    const updatedUser = await this.userRepository.update(user);
-
-    delete updatedUser.password;
+    const { password: _, ...updatedUser } = await this.userRepository.update(
+      user
+    );
 
     return updatedUser;
   }

@@ -21,12 +21,12 @@ export default class OpenAIModelPredictionProvider
     presencyPenalty: presence_penalty,
   }: {
     model: string;
-    prompt?: string;
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    frequencyPenalty?: number;
-    presencyPenalty?: number;
+    prompt: string | null;
+    temperature: number | null;
+    maxTokens: number | null;
+    topP: number | null;
+    frequencyPenalty: number | null;
+    presencyPenalty: number | null;
   }): Promise<unknown> {
     const response = await this.openai.createCompletion({
       model,

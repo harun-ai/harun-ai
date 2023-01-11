@@ -1,4 +1,4 @@
-import IEncryptorProvider from '../../../../provider/encryptorProvider/IEncryptorProvider';
+import IEncryptorProvider from '../../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import IdProvider from '../../../../provider/idProvider/IdProvider';
 import IUserRepository from '../../../../repository/userRepository/IUserRepository';
 import User from '../../../entities/User';
