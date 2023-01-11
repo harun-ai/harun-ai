@@ -1,0 +1,1 @@
+web: cd packages/harun-ai-api && node dist/consumer/httpConsumer/koaHttpConsumer/server.js
