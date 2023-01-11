@@ -10,6 +10,7 @@
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed/createAdmin.ts"
   },
+  "main": "./dist/consumer/httpConsumer/koaHttpConsumer/server.js",
   "scripts": {
     "dev": "node -r esbuild-register src/consumer/httpConsumer/koaHttpConsumer/server.ts",
     "start": "node ./dist/consumer/httpConsumer/koaHttpConsumer/server.js",

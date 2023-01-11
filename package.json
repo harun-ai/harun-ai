@@ -7,6 +7,10 @@
   "author": "Gabriel Sá <gabriel.sa@laura-br.com>",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": "18.x",
+    "yarn": "1.x"
+  },
   "workspaces": {
     "packages": [
       "packages/*"
