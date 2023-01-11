@@ -38,8 +38,11 @@ export default class LoginUserService implements IService<ResponseType> {
       };
     } catch (error) {
       if (error instanceof UserNotFoundError) {
+        const newError = new InvalidUserCreadentialsError(
+          'Invalid email and/or password'
+        );
         return {
-          error: { code: error.name, message: error.message },
+          error: { code: newError.name, message: newError.message },
           statusCode: StatusCode.BAD_REQUEST,
         };
       } else if (error instanceof UserHasNoPasswordError) {

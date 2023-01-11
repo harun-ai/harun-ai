@@ -9,10 +9,15 @@ import IModelRepository from './IModelRepository';
 export default class PrismaModelRepository implements IModelRepository {
   constructor(private client: PrismaClient) {}
 
-  async getAll(): Promise<Model[]> {
+  async getAll(): Promise<Partial<Model>[]> {
     return this.client.model.findMany({
       where: { active: true },
-      include: { user: true },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        user: { select: { name: true, id: true } },
+      },
     });
   }
   async get(modelId: string): Promise<Model> {
