@@ -24,6 +24,10 @@ const getEnvs = () => {
     ADMIN_PASSWORD: str({
       desc: 'Admin password',
     }),
+    API_EMAIL: str({
+      desc: 'Email from api',
+    }),
+    SENDGRID_API_KEY: str(),
   });
 };
 
@@ -33,4 +37,6 @@ export const {
   API_SECRET_KEY,
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
+  API_EMAIL,
+  SENDGRID_API_KEY,
 } = getEnvs();

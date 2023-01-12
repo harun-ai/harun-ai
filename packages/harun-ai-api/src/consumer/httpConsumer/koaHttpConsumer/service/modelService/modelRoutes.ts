@@ -21,7 +21,7 @@ modelRouter.use(authenticateUserMiddleware);
 
 modelRouter.get('/model', async ctx => {
   const response = await new ListModelsService(listModelsUseCase).execute();
-  console.log(ctx.state.user);
+
   ctx.status = response.statusCode;
   ctx.body = response;
 });

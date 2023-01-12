@@ -22,23 +22,17 @@ export const authenticateUserMiddleware = async (
     return;
   }
 
-  let user: Omit<User, 'password'>;
+  const user: Omit<User, 'password'> = await twoWayEncryptorProvider.decrypt(
+    token
+  );
 
-  try {
-    user = await twoWayEncryptorProvider.decrypt(token);
-  } catch (error) {
-    if (error instanceof ExpiredTokenError) {
-      ctx.status = StatusCode.UNAUTHORIZED;
-      ctx.body = {
-        error: error.message,
-      };
-      return;
-    }
+  if (!user.id) {
+    const error = new ExpiredTokenError('Token expired');
 
-    console.log(error);
-
-    ctx.body = { error: 'Unexpected error' };
-    ctx.status = StatusCode.INTERNAL_SERVER_ERROR;
+    ctx.status = StatusCode.UNAUTHORIZED;
+    ctx.body = {
+      error: { code: error.name, message: error.message },
+    };
     return;
   }
 

@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import User from '../../../core/entities/User';
 import CreateCompletionUseCase from '../../../core/useCase/model/createCompletionUseCase';
 import CreateModelUseCase from '../../../core/useCase/model/createModelUseCase';
 import DeleteModelUseCase from '../../../core/useCase/model/deleteModelUseCase';
@@ -8,16 +7,17 @@ import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
 import UpdateModelUseCase from '../../../core/useCase/model/updateModelUseCase';
 import LoginUserUseCase from '../../../core/useCase/user/loginUserUseCase';
 import {
-  ADMIN_EMAIL,
-  ADMIN_PASSWORD,
+  API_SECRET_KEY,
   OPENAI_API_KEY,
+  SENDGRID_API_KEY,
 } from '../../../envConfig';
+import SendgridEmailProvider from '../../../provider/emailProvider/sendgridEmailProvider';
 import UuidProvider from '../../../provider/idProvider/UuidProvider';
 import OpenAIModelPredictionProvider from '../../../provider/modelPredictionProvider/OpenAIModelPredictionProvider';
 import IOneWayEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import JsonSchemaProvider from '../../../provider/schemaProvider/JsonSchemaProvider';
 import MustacheTemplateStringProvider from '../../../provider/templateStringProvider/MustacheTemplateStringProvider';
-import ITwoWayEncryptorProvider from '../../../provider/twoWayEncrytorProvider/ITwoWayEncryptorProvider';
+import IronSessionEncryptorProvider from '../../../provider/twoWayEncrytorProvider/ironSessionEncryptorProvider';
 import PrismaModelRepository from '../../../repository/modelRepository/prismaModelRepository';
 import PrismaUserRepository from '../../../repository/userRepository/prismaUserRepository';
 
@@ -27,7 +27,6 @@ const modelPredictionProvider = new OpenAIModelPredictionProvider(
   OPENAI_API_KEY
 );
 const idProvider = new UuidProvider();
-// const modelRepository = new StaticModelRepository(idProvider);
 
 export const prisma = new PrismaClient();
 const modelRepository = new PrismaModelRepository(prisma);
@@ -58,25 +57,11 @@ const oneWayEncryptorProvider: IOneWayEncryptorProvider = {
   compare: async (param: string) => param === 'test123',
 };
 
-export const user = new User({
-  id: '75531e88-6cc1-41ef-b465-bd003687afea',
-  name: 'admin',
-  email: ADMIN_EMAIL,
-  password: ADMIN_PASSWORD,
-});
+export const twoWayEncryptorProvider = new IronSessionEncryptorProvider(
+  API_SECRET_KEY
+);
 
-user.verified = true;
-
-export const twoWayEncryptorProvider: ITwoWayEncryptorProvider = {
-  encrypt: async () => 'encyptedToken',
-  decrypt: async () =>
-    ({
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    } as any),
-};
+export const emailProvider = new SendgridEmailProvider(SENDGRID_API_KEY);
 
 export const loginUserUseCase = new LoginUserUseCase(
   userRepository,
