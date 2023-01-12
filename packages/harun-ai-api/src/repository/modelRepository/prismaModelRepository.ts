@@ -9,7 +9,7 @@ export default class PrismaModelRepository implements IModelRepository {
   constructor(private client: PrismaClient) {}
 
   async getAll(): Promise<Partial<Model>[]> {
-    return this.client.model.findMany({
+    return await this.client.model.findMany({
       where: { active: true },
       select: {
         id: true,
@@ -21,7 +21,7 @@ export default class PrismaModelRepository implements IModelRepository {
   }
   async get(modelId: string): Promise<Model> {
     try {
-      return this.client.model.findFirstOrThrow({
+      return await this.client.model.findFirstOrThrow({
         where: {
           id: modelId,
         },
@@ -35,7 +35,7 @@ export default class PrismaModelRepository implements IModelRepository {
   }
   async update(model: Model): Promise<Model> {
     try {
-      return this.client.model.update({
+      return await this.client.model.update({
         where: {
           id: model.id,
         },
@@ -65,7 +65,7 @@ export default class PrismaModelRepository implements IModelRepository {
 
   async save(model: Model): Promise<Model> {
     try {
-      return this.client.model.create({
+      return await this.client.model.create({
         data: model,
       });
     } catch (error) {
