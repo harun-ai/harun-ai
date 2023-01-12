@@ -36,6 +36,6 @@ model Model {
   topP             Int?
   frequencyPenalty Int?
   presencePenalty  Int?
-  user             User     @relation(fields: [createdBy], references: [id])
-  createdBy        String   @db.VarChar(255)
+  user             User     @relation(fields: [userId], references: [id])
+  userId           String   @db.VarChar(255)
 }
