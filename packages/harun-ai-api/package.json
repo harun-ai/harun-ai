@@ -14,9 +14,9 @@
   "scripts": {
     "dev": "node -r esbuild-register src/consumer/httpConsumer/koaHttpConsumer/server.ts",
     "start": "node ./dist/consumer/httpConsumer/koaHttpConsumer/server.js",
-    "heroku-postbuild": "npx swc ./src -d ./dist --config-file .swcrc",
     "build": "npx swc ./src -d ./dist --config-file .swcrc",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "seed": "node ./dist/repository/userRepository/seed/createAdmin.js"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",

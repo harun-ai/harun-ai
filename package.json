@@ -19,7 +19,8 @@
   "scripts": {
     "test": "jest",
     "build": "yarn workspace @harun-ai/harun-ai-api build",
-    "start": "yarn workspace @harun-ai/harun-ai-api start"
+    "start": "yarn workspace @harun-ai/harun-ai-api start",
+    "heroku-postbuild": "yarn workspace @harun-ai/harun-ai-api seed"
   },
   "devDependencies": {
     "@jest/globals": "^29.3.1",

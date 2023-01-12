@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import User from '../../src/core/entities/User';
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from '../../src/envConfig';
+import User from '../../../core/entities/User';
+import { ADMIN_EMAIL, ADMIN_PASSWORD } from '../../../envConfig';
 
 const prisma = new PrismaClient();
 
