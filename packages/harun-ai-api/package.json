@@ -8,7 +8,7 @@
     "yarn": "1.x"
   },
   "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed/createAdmin.ts"
+    "seed": "node ./dist/repository/userRepository/seed/createAdmin.js"
   },
   "main": "./dist/consumer/httpConsumer/koaHttpConsumer/server.js",
   "scripts": {
@@ -16,7 +16,7 @@
     "start": "node ./dist/consumer/httpConsumer/koaHttpConsumer/server.js",
     "build": "npx swc ./src -d ./dist --config-file .swcrc",
     "test": "jest --coverage",
-    "seed": "node ./dist/repository/userRepository/seed/createAdmin.js"
+    "seed": "npx prisma db seed"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
