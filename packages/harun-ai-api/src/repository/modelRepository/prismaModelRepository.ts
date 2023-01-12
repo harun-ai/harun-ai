@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 import Model from '../../core/entities/Model';
 import ModelAlreadyExistsError from '../../core/errors/ModelAlreadyExistsError';
@@ -28,7 +27,7 @@ export default class PrismaModelRepository implements IModelRepository {
         },
       });
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError)
+      if (error instanceof Prisma.PrismaClientKnownRequestError)
         throw new ModelNotFoundError(error.message);
 
       throw error;
@@ -43,7 +42,7 @@ export default class PrismaModelRepository implements IModelRepository {
         data: model,
       });
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError)
+      if (error instanceof Prisma.PrismaClientKnownRequestError)
         throw new ModelNotFoundError(error.message);
 
       throw error;
@@ -57,7 +56,7 @@ export default class PrismaModelRepository implements IModelRepository {
         },
       });
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError)
+      if (error instanceof Prisma.PrismaClientKnownRequestError)
         throw new ModelNotFoundError(error.message);
 
       throw error;
@@ -70,7 +69,7 @@ export default class PrismaModelRepository implements IModelRepository {
         data: model,
       });
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError)
+      if (error instanceof Prisma.PrismaClientKnownRequestError)
         throw new ModelAlreadyExistsError(error.message);
 
       throw error;
