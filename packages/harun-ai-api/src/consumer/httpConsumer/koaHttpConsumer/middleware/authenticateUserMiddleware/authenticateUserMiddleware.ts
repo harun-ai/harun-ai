@@ -1,7 +1,7 @@
 import { ParameterizedContext } from 'koa';
 import { twoWayEncryptorProvider } from '../..';
 import User from '../../../../../core/entities/User';
-import ExpiredTokenError from '../../../../../core/errors/ExpiredTokenError';
+import InvalidTokenError from '../../../../../core/errors/InvalidTokenError';
 import { StatusCode } from '../../service/IService';
 
 export const authenticateUserMiddleware = async (
@@ -27,7 +27,7 @@ export const authenticateUserMiddleware = async (
   );
 
   if (!user.id) {
-    const error = new ExpiredTokenError('Token expired');
+    const error = new InvalidTokenError('Token is invalid or expired');
 
     ctx.status = StatusCode.UNAUTHORIZED;
     ctx.body = {

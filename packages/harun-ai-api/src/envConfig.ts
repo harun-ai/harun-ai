@@ -15,6 +15,9 @@ const getEnvs = () => {
     API_SECRET_KEY: str({
       desc: 'API secret key',
     }),
+    API_DOMAIN: str({
+      desc: 'API domain',
+    }),
     DATABASE_URL: url({
       desc: 'Url to database',
     }),
@@ -35,6 +38,7 @@ export const {
   NODE_ENV,
   OPENAI_API_KEY,
   API_SECRET_KEY,
+  API_DOMAIN,
   ADMIN_EMAIL,
   ADMIN_PASSWORD,
   API_EMAIL,

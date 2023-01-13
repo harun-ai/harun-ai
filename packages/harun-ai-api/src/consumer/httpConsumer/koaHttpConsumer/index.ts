@@ -5,7 +5,11 @@ import DeleteModelUseCase from '../../../core/useCase/model/deleteModelUseCase';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
 import UpdateModelUseCase from '../../../core/useCase/model/updateModelUseCase';
+import CreateUserUseCase from '../../../core/useCase/user/createUserUseCase';
+import DeleteUserUseCase from '../../../core/useCase/user/deleteUserUseCase';
+import GetAllUsersUseCase from '../../../core/useCase/user/getAllUsersUseCase';
 import LoginUserUseCase from '../../../core/useCase/user/loginUserUseCase';
+import VerifyEmailUseCase from '../../../core/useCase/user/verifyEmailUseCase';
 import {
   API_SECRET_KEY,
   OPENAI_API_KEY,
@@ -14,7 +18,7 @@ import {
 import SendgridEmailProvider from '../../../provider/emailProvider/sendgridEmailProvider';
 import UuidProvider from '../../../provider/idProvider/UuidProvider';
 import OpenAIModelPredictionProvider from '../../../provider/modelPredictionProvider/OpenAIModelPredictionProvider';
-import IOneWayEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
+import BcryptEncriptorProvider from '../../../provider/oneWayencryptorProvider/bcryptEncryptorProvider';
 import JsonSchemaProvider from '../../../provider/schemaProvider/JsonSchemaProvider';
 import MustacheTemplateStringProvider from '../../../provider/templateStringProvider/MustacheTemplateStringProvider';
 import IronSessionEncryptorProvider from '../../../provider/twoWayEncrytorProvider/ironSessionEncryptorProvider';
@@ -52,10 +56,7 @@ export const createCompletionUseCase = new CreateCompletionUseCase(
 
 const userRepository = new PrismaUserRepository(prisma);
 
-const oneWayEncryptorProvider: IOneWayEncryptorProvider = {
-  encrypt: async () => 'encyptedPass',
-  compare: async (param: string) => param === 'test123',
-};
+const oneWayEncryptorProvider = new BcryptEncriptorProvider();
 
 export const twoWayEncryptorProvider = new IronSessionEncryptorProvider(
   API_SECRET_KEY
@@ -66,4 +67,17 @@ export const emailProvider = new SendgridEmailProvider(SENDGRID_API_KEY);
 export const loginUserUseCase = new LoginUserUseCase(
   userRepository,
   oneWayEncryptorProvider
+);
+export const createUserUseCase = new CreateUserUseCase(
+  userRepository,
+  oneWayEncryptorProvider,
+  idProvider,
+  emailProvider,
+  twoWayEncryptorProvider
+);
+export const deleteUserUseCase = new DeleteUserUseCase(userRepository);
+export const getAllUsersUseCase = new GetAllUsersUseCase(userRepository);
+export const verifyEmailUseCase = new VerifyEmailUseCase(
+  userRepository,
+  twoWayEncryptorProvider
 );

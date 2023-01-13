@@ -3,9 +3,7 @@ export type sendEmailDTO = {
     to: string;
     from: string;
     subject: string;
-    text: string;
-    html?: string;
-  };
+  } & ({ text: string } | { html: string } | { templateId: string });
   Output: void;
 };
 

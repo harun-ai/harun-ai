@@ -1,4 +1,4 @@
 export default interface IOneWayEncryptorProvider {
-  encrypt<ParamType>(param: ParamType): Promise<string>;
+  encrypt(param: string): Promise<string>;
   compare(param: string, encrypted: string): Promise<boolean>;
 }

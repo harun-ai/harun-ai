@@ -1,4 +1,4 @@
-import IEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
+import IOneWayEncryptorProvider from '../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import IUserRepository from '../../../repository/userRepository/IUserRepository';
 import Entity from '../../entities/Entity';
 import User from '../../entities/User';
@@ -19,7 +19,7 @@ export default class UpdateUserUseCase
 {
   constructor(
     private userRepository: IUserRepository,
-    private encryptorProvider: IEncryptorProvider
+    private encryptorProvider: IOneWayEncryptorProvider
   ) {}
 
   async use({
@@ -41,6 +41,10 @@ export default class UpdateUserUseCase
 
     if (params.email) {
       user.verified = false;
+    }
+
+    if (params.password) {
+      params.password = await this.encryptorProvider.encrypt(params.password);
     }
 
     Entity.update(params, user);
