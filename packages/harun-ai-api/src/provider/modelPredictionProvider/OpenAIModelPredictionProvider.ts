@@ -28,7 +28,7 @@ export default class OpenAIModelPredictionProvider
     topP: number | null;
     frequencyPenalty: number | null;
     presencyPenalty: number | null;
-  }): Promise<unknown> {
+  }): Promise<string> {
     try {
       const response = await this.openai.createCompletion({
         model,
@@ -38,10 +38,10 @@ export default class OpenAIModelPredictionProvider
         top_p,
         frequency_penalty,
         presence_penalty,
-        n: 3,
+        n: 1,
       });
 
-      return response.data.choices;
+      return response.data.choices[0]?.text || '';
     } catch (error) {
       if (error instanceof Error) {
         throw new CreateCompletionError('OpenAI is unavailable');

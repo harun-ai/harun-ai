@@ -27,7 +27,11 @@ export default class CreateCompletionService implements IService<unknown> {
         .parseAsync(ctx.params);
 
       return {
-        success: await this.createCompletionUseCase.use({ modelId, inputs }),
+        success: await this.createCompletionUseCase.use({
+          modelId,
+          inputs,
+          userId: ctx.state.user.id,
+        }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {

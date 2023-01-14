@@ -2,16 +2,20 @@ import Router from '@koa/router';
 import {
   createUserUseCase,
   deleteUserUseCase,
+  forgotPasswordUseCase,
   getAllUsersUseCase,
   loginUserUseCase,
+  resetPasswordUseCase,
   twoWayEncryptorProvider,
   verifyEmailUseCase,
 } from '../..';
 import { authenticateUserMiddleware } from '../../middleware/authenticateUserMiddleware/authenticateUserMiddleware';
 import CreateUserService from './createUserService';
 import DeleteUserService from './deleteUserService';
+import ForgotPasswordService from './forgotPasswordService';
 import GetAllUsersService from './getAllUsersService';
 import LoginUserService from './loginUserService';
+import ResetPasswordService from './resetPasswordService';
 import VerifyEmailService from './verifyEmailService';
 
 const userRouter = new Router();
@@ -27,6 +31,22 @@ userRouter.post('/login', async ctx => {
 
 userRouter.get('/user/verify-email', async ctx => {
   const response = await new VerifyEmailService(verifyEmailUseCase).execute(
+    ctx
+  );
+  ctx.status = response.statusCode;
+  ctx.body = response;
+});
+
+userRouter.post('/user/forgot-password', async ctx => {
+  const response = await new ForgotPasswordService(
+    forgotPasswordUseCase
+  ).execute(ctx);
+  ctx.status = response.statusCode;
+  ctx.body = response;
+});
+
+userRouter.post('/user/reset-password', async ctx => {
+  const response = await new ResetPasswordService(resetPasswordUseCase).execute(
     ctx
   );
   ctx.status = response.statusCode;

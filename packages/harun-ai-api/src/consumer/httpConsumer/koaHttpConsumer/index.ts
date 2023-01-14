@@ -5,10 +5,13 @@ import DeleteModelUseCase from '../../../core/useCase/model/deleteModelUseCase';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
 import UpdateModelUseCase from '../../../core/useCase/model/updateModelUseCase';
+import ListPredictionsUseCase from '../../../core/useCase/prediction/listPredictionsUseCase';
 import CreateUserUseCase from '../../../core/useCase/user/createUserUseCase';
 import DeleteUserUseCase from '../../../core/useCase/user/deleteUserUseCase';
+import ForgotPasswordUseCase from '../../../core/useCase/user/forgotPasswordUseCase';
 import GetAllUsersUseCase from '../../../core/useCase/user/getAllUsersUseCase';
 import LoginUserUseCase from '../../../core/useCase/user/loginUserUseCase';
+import ResetPasswordUseCase from '../../../core/useCase/user/resetPasswordUseCase';
 import VerifyEmailUseCase from '../../../core/useCase/user/verifyEmailUseCase';
 import {
   API_SECRET_KEY,
@@ -23,6 +26,7 @@ import JsonSchemaProvider from '../../../provider/schemaProvider/JsonSchemaProvi
 import MustacheTemplateStringProvider from '../../../provider/templateStringProvider/MustacheTemplateStringProvider';
 import IronSessionEncryptorProvider from '../../../provider/twoWayEncrytorProvider/ironSessionEncryptorProvider';
 import PrismaModelRepository from '../../../repository/modelRepository/prismaModelRepository';
+import PrismaPredictionRepository from '../../../repository/predictionRepository/prismaPredictionRepository';
 import PrismaUserRepository from '../../../repository/userRepository/prismaUserRepository';
 
 const schemaProvider = new JsonSchemaProvider();
@@ -34,6 +38,7 @@ const idProvider = new UuidProvider();
 
 export const prisma = new PrismaClient();
 const modelRepository = new PrismaModelRepository(prisma);
+const predictionRepository = new PrismaPredictionRepository(prisma);
 
 export const listModelsUseCase = new ListModelsUseCase(modelRepository);
 export const getModelUseCase = new GetModelUseCase(modelRepository);
@@ -51,7 +56,9 @@ export const createCompletionUseCase = new CreateCompletionUseCase(
   modelRepository,
   modelPredictionProvider,
   templateStringProvider,
-  schemaProvider
+  schemaProvider,
+  idProvider,
+  predictionRepository
 );
 
 const userRepository = new PrismaUserRepository(prisma);
@@ -80,4 +87,18 @@ export const getAllUsersUseCase = new GetAllUsersUseCase(userRepository);
 export const verifyEmailUseCase = new VerifyEmailUseCase(
   userRepository,
   twoWayEncryptorProvider
+);
+export const forgotPasswordUseCase = new ForgotPasswordUseCase(
+  userRepository,
+  twoWayEncryptorProvider,
+  emailProvider
+);
+export const resetPasswordUseCase = new ResetPasswordUseCase(
+  twoWayEncryptorProvider,
+  userRepository,
+  oneWayEncryptorProvider
+);
+
+export const listPredictionsUseCase = new ListPredictionsUseCase(
+  predictionRepository
 );
