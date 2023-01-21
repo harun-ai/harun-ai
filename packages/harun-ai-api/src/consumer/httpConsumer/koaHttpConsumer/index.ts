@@ -10,8 +10,10 @@ import CreateUserUseCase from '../../../core/useCase/user/createUserUseCase';
 import DeleteUserUseCase from '../../../core/useCase/user/deleteUserUseCase';
 import ForgotPasswordUseCase from '../../../core/useCase/user/forgotPasswordUseCase';
 import GetAllUsersUseCase from '../../../core/useCase/user/getAllUsersUseCase';
+import InviteFriendUseCase from '../../../core/useCase/user/inviteFriendUseCase';
 import LoginUserUseCase from '../../../core/useCase/user/loginUserUseCase';
 import ResetPasswordUseCase from '../../../core/useCase/user/resetPasswordUseCase';
+import UpdateUserUseCase from '../../../core/useCase/user/updateUserUseCase';
 import VerifyEmailUseCase from '../../../core/useCase/user/verifyEmailUseCase';
 import {
   API_SECRET_KEY,
@@ -98,6 +100,14 @@ export const resetPasswordUseCase = new ResetPasswordUseCase(
   userRepository,
   oneWayEncryptorProvider
 );
+export const updateUserUseCase = new UpdateUserUseCase(
+  userRepository,
+  oneWayEncryptorProvider,
+  emailProvider,
+  twoWayEncryptorProvider
+);
+
+export const inviteFriendUseCase = new InviteFriendUseCase(emailProvider);
 
 export const listPredictionsUseCase = new ListPredictionsUseCase(
   predictionRepository

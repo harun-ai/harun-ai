@@ -13,10 +13,9 @@ export default class GetAllUsersUseCase
   constructor(private userRepository: IUserRepository) {}
 
   async use(): Promise<GetAllUsersUseCaseDTO['Response']> {
-    const users = (await this.userRepository.getAll()).map(user => {
-      delete user.password;
-      return user;
-    });
+    const users = (await this.userRepository.getAll()).map(
+      ({ password: _, ...user }) => user
+    );
 
     return users;
   }

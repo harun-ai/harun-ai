@@ -38,6 +38,7 @@ CREATE TABLE "Prediction" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "modelId" VARCHAR(255) NOT NULL,
     "result" VARCHAR NOT NULL,
+    "inputs" JSONB NOT NULL,
     "userId" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "Prediction_pkey" PRIMARY KEY ("id")

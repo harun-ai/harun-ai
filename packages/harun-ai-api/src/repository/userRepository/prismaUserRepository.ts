@@ -7,7 +7,7 @@ import IUserRepository from './IUserRepository';
 export default class PrismaUserRepository implements IUserRepository {
   constructor(private client: PrismaClient) {}
 
-  async save(user: User): Promise<User> {
+  async save(user: Omit<User, 'models' | 'predictions'>): Promise<User> {
     try {
       return await this.client.user.create({
         data: user,
@@ -20,15 +20,18 @@ export default class PrismaUserRepository implements IUserRepository {
     }
   }
 
-  async update(params: Partial<User>): Promise<User> {
+  async update(
+    params: Partial<Omit<User, 'models' | 'predictions'>>
+  ): Promise<User> {
     try {
       return await this.client.user.update({
         where: { id: params.id },
         data: params,
       });
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError)
-        throw new UserNotFoundError(error.message);
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new UserAlreadyExistsError(error.message);
+      }
 
       throw error;
     }
@@ -75,6 +78,25 @@ export default class PrismaUserRepository implements IUserRepository {
   }
 
   async getAll(): Promise<Partial<User>[]> {
-    return this.client.user.findMany();
+    return this.client.user.findMany({
+      include: {
+        predictions: {
+          select: {
+            id: true,
+            model: {
+              select: {
+                name: true,
+              },
+            },
+            inputs: true,
+          },
+        },
+        models: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
   }
 }

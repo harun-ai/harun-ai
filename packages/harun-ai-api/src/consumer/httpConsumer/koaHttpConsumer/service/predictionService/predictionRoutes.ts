@@ -15,7 +15,14 @@ predictionRouter.get('/prediction', async ctx => {
     listPredictionsUseCase
   ).execute();
 
-  const csv = parse(response.success?.map(item => dot.dot(item)) || []);
+  const csv = parse(
+    response.success?.map(({ inputs, ...item }) => {
+      return {
+        ...dot.dot(item),
+        inputs,
+      };
+    }) || []
+  );
 
   ctx.set('Content-disposition', `attachment; filename=predictions.csv`);
   ctx.status = response.statusCode;

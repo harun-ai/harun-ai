@@ -14,6 +14,7 @@ export default class PrismaPredictionRepository
         modelId: prediction.modelId,
         userId: prediction.userId,
         result: prediction.result,
+        inputs: prediction.inputs,
       },
     });
   }
@@ -22,14 +23,12 @@ export default class PrismaPredictionRepository
       include: {
         user: {
           select: {
-            id: true,
             name: true,
             email: true,
           },
         },
         model: {
           select: {
-            id: true,
             name: true,
             description: true,
           },

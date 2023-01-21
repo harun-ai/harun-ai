@@ -5,6 +5,7 @@ export default class Prediction {
   id: string;
   createdAt = new Date();
   result: string;
+  inputs: any;
   modelId: Model['id'];
   model?: Partial<Model>;
   userId: User['id'];

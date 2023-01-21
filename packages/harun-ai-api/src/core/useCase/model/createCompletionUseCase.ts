@@ -59,6 +59,7 @@ export default class CreateCompletionUseCase
         modelId,
         userId,
         result,
+        inputs,
       })
     );
 
