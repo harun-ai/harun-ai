@@ -1,5 +1,6 @@
 import ISchemaProvider from '../../../provider/schemaProvider/ISchemaProvider';
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
+import Entity from '../../entities/Entity';
 import Model from '../../entities/Model';
 import InvalidInputSchemaError from '../../errors/InvalidInputSchemaError';
 import IUseCase from '../IUseCase';
@@ -36,7 +37,7 @@ export default class UpdateModelUseCase
       }
     }
 
-    model.update(params);
+    Entity.update(params, model);
 
     return this.modelRepository.update(model);
   }

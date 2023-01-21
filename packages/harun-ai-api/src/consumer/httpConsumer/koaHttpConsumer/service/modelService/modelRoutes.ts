@@ -13,11 +13,15 @@ import ListModelsService from './listModelsService';
 import CreateModelService from './createModelService';
 import DeleteModelService from './deleteModelService';
 import CreateCompletionService from './createCompletionService';
+import { authenticateUserMiddleware } from '../../middleware/authenticateUserMiddleware/authenticateUserMiddleware';
 
 const modelRouter = new Router();
 
+modelRouter.use(authenticateUserMiddleware);
+
 modelRouter.get('/model', async ctx => {
   const response = await new ListModelsService(listModelsUseCase).execute();
+
   ctx.status = response.statusCode;
   ctx.body = response;
 });
@@ -54,6 +58,7 @@ modelRouter.post('/model/completion/:modelId', async ctx => {
   const response = await new CreateCompletionService(
     createCompletionUseCase
   ).execute(ctx);
+
   ctx.status = response.statusCode;
   ctx.body = response;
 });

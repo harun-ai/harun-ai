@@ -17,9 +17,7 @@ export default class GetUserUseCase implements IUseCase<GetUserUseCaseDTO> {
   }: {
     userId: User['id'];
   }): Promise<GetUserUseCaseDTO['Response']> {
-    const response = await this.userRepository.get(userId);
-
-    delete response.password;
+    const { password, ...response } = await this.userRepository.get(userId);
 
     return response;
   }

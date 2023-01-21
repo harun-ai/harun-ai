@@ -1,4 +1,5 @@
 import { ParameterizedContext } from 'koa';
+import { State } from '../app';
 
 export const StatusCode = {
   CONTINUE: 100,
@@ -62,16 +63,19 @@ export const StatusCode = {
 };
 
 export type ServiceDTO<ResponseType> = {
-  Request: ParameterizedContext;
+  Request: ParameterizedContext<State>;
   Response: {
     success?: ResponseType;
-    error?: string;
+    error?: {
+      code: string;
+      message: string;
+    };
     statusCode: number;
   };
 };
 
 export default interface IService<ResponseType> {
   execute(
-    request: ServiceDTO<ResponseType>['Request']
+    ctx: ServiceDTO<ResponseType>['Request']
   ): Promise<ServiceDTO<ResponseType>['Response']>;
 }

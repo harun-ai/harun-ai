@@ -1,4 +1,4 @@
-import IEncryptorProvider from '../../../../provider/encryptorProvider/IEncryptorProvider';
+import IEncryptorProvider from '../../../../provider/oneWayencryptorProvider/IOneWayEncryptorProvider';
 import IUserRepository from '../../../../repository/userRepository/IUserRepository';
 import User from '../../../entities/User';
 import UserNotFoundError from '../../../errors/UserNotFoundError';
@@ -50,7 +50,7 @@ describe('updateUserUseCase', () => {
         password: encrypedPassword,
       });
 
-      user.setVerified();
+      user.verified = true;
 
       return user;
     });
@@ -65,7 +65,6 @@ describe('updateUserUseCase', () => {
       id: request.userId,
       name: request.params.name,
       email: request.params.email,
-      models: undefined,
       verified: false,
       createdAt: mockDate,
       updatedAt: mockDate,
@@ -75,7 +74,7 @@ describe('updateUserUseCase', () => {
       id: request.userId,
       name: request.params.name,
       email: request.params.email,
-      models: undefined,
+      password: encrypedPassword,
       verified: false,
       createdAt: mockDate,
       updatedAt: mockDate,
@@ -131,7 +130,7 @@ describe('updateUserUseCase', () => {
         password: encrypedPassword,
       });
 
-      user.setVerified();
+      user.verified = true;
 
       return user;
     });
@@ -170,7 +169,7 @@ describe('updateUserUseCase', () => {
         password: encrypedPassword,
       });
 
-      user.setVerified();
+      user.verified = true;
 
       return user;
     });
@@ -185,7 +184,6 @@ describe('updateUserUseCase', () => {
       id: request.userId,
       name: request.params.name,
       email: 'oldEmail',
-      models: undefined,
       verified: true,
       createdAt: mockDate,
       updatedAt: mockDate,
@@ -195,7 +193,7 @@ describe('updateUserUseCase', () => {
       id: request.userId,
       name: request.params.name,
       email: 'oldEmail',
-      models: undefined,
+      password: encrypedPassword,
       verified: true,
       createdAt: mockDate,
       updatedAt: mockDate,

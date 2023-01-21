@@ -1,14 +1,14 @@
 export type GetPredictionDTO = {
   Request: {
     model: string;
-    prompt?: string;
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    frequencyPenalty?: number;
-    presencyPenalty?: number;
+    prompt: string | null;
+    temperature: number | null;
+    maxTokens: number | null;
+    topP: number | null;
+    frequencyPenalty: number | null;
+    presencyPenalty: number | null;
   };
-  Response: unknown;
+  Response: string;
 };
 
 export default interface IModelPredictionProvider {

@@ -1,14 +1,19 @@
+import { User } from '@prisma/client';
+import IdProvider from '../../../provider/idProvider/IdProvider';
 import IModelPredictionProvider from '../../../provider/modelPredictionProvider/IModelPredictionProvider';
 import ISchemaProvider from '../../../provider/schemaProvider/ISchemaProvider';
 import ITemplateStringProvider from '../../../provider/templateStringProvider/ITemplateStringProvider';
 import IModelRepository from '../../../repository/modelRepository/IModelRepository';
+import IPredictionRepository from '../../../repository/predictionRepository/IPredictionRepository';
 import Model from '../../entities/Model';
+import Prediction from '../../entities/Prediction';
 import IUseCase from '../IUseCase';
 
 export type CreateCompletionUseCaseDTO = {
   Request: {
     modelId: Model['id'];
     inputs: Record<string, unknown>;
+    userId: User['id'];
   };
   Response: unknown;
 };
@@ -20,10 +25,13 @@ export default class CreateCompletionUseCase
     private modelRepository: IModelRepository,
     private modelPredictionProvider: IModelPredictionProvider,
     private templateStringProvider: ITemplateStringProvider,
-    private shemaProvider: ISchemaProvider
+    private shemaProvider: ISchemaProvider,
+    private idProvider: IdProvider,
+    private predictionRepository: IPredictionRepository
   ) {}
   async use({
     modelId,
+    userId,
     inputs,
   }: CreateCompletionUseCaseDTO['Request']): Promise<unknown> {
     const model = await this.modelRepository.get(modelId);
@@ -35,7 +43,7 @@ export default class CreateCompletionUseCase
       inputs
     );
 
-    return this.modelPredictionProvider.createCompletion({
+    const result = await this.modelPredictionProvider.createCompletion({
       model: model.model,
       prompt: prompt,
       temperature: model.temperature,
@@ -44,5 +52,17 @@ export default class CreateCompletionUseCase
       frequencyPenalty: model.frequencyPenalty,
       presencyPenalty: model.presencePenalty,
     });
+
+    await this.predictionRepository.save(
+      new Prediction({
+        id: await this.idProvider.generateId(),
+        modelId,
+        userId,
+        result,
+        inputs,
+      })
+    );
+
+    return result;
   }
 }

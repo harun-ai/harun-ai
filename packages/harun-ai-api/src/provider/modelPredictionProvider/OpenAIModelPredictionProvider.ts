@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai';
+import CreateCompletionError from '../../core/errors/UserPasswordDoNotMatchError copy';
 import IModelPredictionProvider from './IModelPredictionProvider';
 
 export default class OpenAIModelPredictionProvider
@@ -21,24 +22,32 @@ export default class OpenAIModelPredictionProvider
     presencyPenalty: presence_penalty,
   }: {
     model: string;
-    prompt?: string;
-    temperature?: number;
-    maxTokens?: number;
-    topP?: number;
-    frequencyPenalty?: number;
-    presencyPenalty?: number;
-  }): Promise<unknown> {
-    const response = await this.openai.createCompletion({
-      model,
-      prompt,
-      temperature,
-      max_tokens,
-      top_p,
-      frequency_penalty,
-      presence_penalty,
-      n: 3,
-    });
+    prompt: string | null;
+    temperature: number | null;
+    maxTokens: number | null;
+    topP: number | null;
+    frequencyPenalty: number | null;
+    presencyPenalty: number | null;
+  }): Promise<string> {
+    try {
+      const response = await this.openai.createCompletion({
+        model,
+        prompt,
+        temperature,
+        max_tokens,
+        top_p,
+        frequency_penalty,
+        presence_penalty,
+        n: 1,
+      });
 
-    return response.data.choices;
+      return response.data.choices[0]?.text || '';
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new CreateCompletionError('OpenAI is unavailable');
+      }
+
+      throw error;
+    }
   }
 }

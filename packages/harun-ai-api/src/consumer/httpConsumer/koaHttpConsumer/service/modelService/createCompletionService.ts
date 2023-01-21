@@ -14,7 +14,7 @@ export default class CreateCompletionService implements IService<unknown> {
     try {
       const inputs = await z
         .record(z.unknown(), {
-          required_error: "'body' is required",
+          required_error: "'params' is required",
         })
         .parseAsync(ctx.request.body);
 
@@ -27,29 +27,38 @@ export default class CreateCompletionService implements IService<unknown> {
         .parseAsync(ctx.params);
 
       return {
-        success: await this.createCompletionUseCase.use({ modelId, inputs }),
+        success: await this.createCompletionUseCase.use({
+          modelId,
+          inputs,
+          userId: ctx.state.user.id,
+        }),
         statusCode: StatusCode.OK,
       };
     } catch (error) {
       if (error instanceof ModelNotFoundError) {
         return {
-          error: error.message,
+          error: { code: error.name, message: error.message },
           statusCode: StatusCode.NOT_FOUND,
         };
       } else if (error instanceof InvalidInputParamsError) {
         return {
-          error: error.message,
+          error: { code: error.name, message: error.message },
           statusCode: StatusCode.BAD_REQUEST,
         };
       } else if (error instanceof z.ZodError) {
         return {
-          error: error.errors.map(error => error.message).join(', '),
+          error: {
+            code: error.name,
+            message: error.errors.map(error => error.message).join(', '),
+          },
           statusCode: StatusCode.BAD_REQUEST,
         };
       }
+
       console.error(error);
+
       return {
-        error: 'Unexpect error',
+        error: { code: 'INTERNAL_SERVER_ERROR', message: 'Unexpect error' },
         statusCode: StatusCode.INTERNAL_SERVER_ERROR,
       };
     }

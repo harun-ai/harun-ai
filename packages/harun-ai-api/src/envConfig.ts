@@ -1,4 +1,4 @@
-import { cleanEnv, str } from 'envalid';
+import { cleanEnv, str, url } from 'envalid';
 import { config } from 'dotenv';
 
 config();
@@ -12,7 +12,35 @@ const getEnvs = () => {
     OPENAI_API_KEY: str({
       desc: 'Open AI secret API key',
     }),
+    API_SECRET_KEY: str({
+      desc: 'API secret key',
+    }),
+    API_DOMAIN: str({
+      desc: 'API domain',
+    }),
+    DATABASE_URL: url({
+      desc: 'Url to database',
+    }),
+    ADMIN_EMAIL: str({
+      desc: 'Admin email',
+    }),
+    ADMIN_PASSWORD: str({
+      desc: 'Admin password',
+    }),
+    API_EMAIL: str({
+      desc: 'Email from api',
+    }),
+    SENDGRID_API_KEY: str(),
   });
 };
 
-export const { NODE_ENV, OPENAI_API_KEY } = getEnvs();
+export const {
+  NODE_ENV,
+  OPENAI_API_KEY,
+  API_SECRET_KEY,
+  API_DOMAIN,
+  ADMIN_EMAIL,
+  ADMIN_PASSWORD,
+  API_EMAIL,
+  SENDGRID_API_KEY,
+} = getEnvs();

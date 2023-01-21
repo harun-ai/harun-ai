@@ -1,1 +1,0 @@
-web: node packages/harun-ai-api/dist/bundle.js
