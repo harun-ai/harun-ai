@@ -5,15 +5,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { SharedModule } from './shared/shared.module';
+import { ModelTemplateModule } from './modules/model-template/model-template.module';
 
 const modules = [
   SharedModule,
-  DashboardModule
+  DashboardModule,
+  ModelTemplateModule
 ]
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
