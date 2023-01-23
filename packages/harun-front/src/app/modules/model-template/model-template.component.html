@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="breadcrumb">
+        <img src="../../../assets/Line 2.png" width="15px" alt="">
+        <span>Ata de reunião</span>
+    </div>
+
+    <div class="template-area" *ngIf="!isLoading && !isResult">
+        <div class="steps">
+            <div class="step" [ngClass]="step == 1 ? 'active':''"></div>
+            <div class="step" [ngClass]="step == 2 ? 'active':''"></div>
+            <div class="step" [ngClass]="step == 3 ? 'active':''"></div>
+        </div>
+
+        <ng-template [ngIf]="step == 1">
+            <div class="template-content">
+                <span class="template-content-title">Quais são suas anotações da reunião?</span>
+                <div class="template-content-input">
+                    <textarea type="text" class="custom-input" placeholder="Comece digitando..."></textarea>
+                    <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template [ngIf]="step == 2">
+            <div class="template-content">
+                <span class="template-content-title">Liste os próximos passos ou tarefas criadas na reunião</span>
+                <div class="template-content-input">
+                    <textarea type="text" class="custom-input" placeholder="Comece digitando..."></textarea>
+                    <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template [ngIf]="step == 3">
+            <div class="template-content" [ngClass]="step == 3 ? 'custom-width':''">
+                <span class="template-content-title">Por fim, selecione como gostaria que o tom de voz da sua <i>Ata de reunião</i> fosse:</span>
+                <div class="template-content-input">
+                    <div class="box-type-model">
+                        <span for="">Modo relato informal</span>
+                        <mat-slide-toggle>
+                            Modo ata formal
+                        </mat-slide-toggle>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <div class="template-buttons" [ngClass]="step == 3 ? 'custom-width':''">
+            <button class="btn-cancel">Cancelar</button>
+            <div class="right-buttons">
+                <button class="btn-skip" *ngIf="step != 3">Pular
+                    <img class="icon-right" src="../../../assets/line right.png" width="12px" alt="">
+                </button>
+
+                <button class="btn-previous" *ngIf="step > 1" (click)="previousStep()">Anterior</button>
+
+                <button class="btn-next" *ngIf="step != 3" [ngClass]="step == 1 ? 'custom-margin':''" (click)="nextStep()">Próximo</button>
+                <button class="btn-generate" *ngIf="step == 3" (click)="generateTemplate()">Gerar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="template-area" *ngIf="isLoading && !isResult">
+        <div class="loading-area">
+            <div class="loading-circle"></div>
+            <span>Estou gerando o template <i>Ata de reunião</i>, aguarde alguns instantes</span>
+        </div>
+    </div>
+
+    <div class="template-area" *ngIf="!isLoading && isResult">
+        <h1>deu boas!!!</h1>
+    </div>
+</div>
