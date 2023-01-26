@@ -1,6 +1,5 @@
 import { API_EMAIL } from '../../../envConfig';
 import IEmailProvider from '../../../provider/emailProvider/IEmailProvider';
-import ITwoWayEncryptorProvider from '../../../provider/twoWayEncrytorProvider/ITwoWayEncryptorProvider';
 import IUseCase from '../IUseCase';
 
 export type InviteFriendUseCaseDTO = {
