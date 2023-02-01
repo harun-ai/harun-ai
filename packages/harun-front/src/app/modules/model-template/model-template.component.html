@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" *ngIf="objTeste">
     <div class="breadcrumb">
         <img src="../../../assets/Line 2.png" width="15px" alt="">
         <span>Ata de reunião</span>
@@ -10,54 +10,74 @@
             <div class="step" [ngClass]="step == 2 ? 'active':''"></div>
             <div class="step" [ngClass]="step == 3 ? 'active':''"></div>
         </div>
-
-        <ng-template [ngIf]="step == 1">
-            <div class="template-content">
-                <span class="template-content-title">Quais são suas anotações da reunião?</span>
-                <div class="template-content-input">
-                    <textarea type="text" class="custom-input" placeholder="Comece digitando..."></textarea>
-                    <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template [ngIf]="step == 2">
-            <div class="template-content">
-                <span class="template-content-title">Liste os próximos passos ou tarefas criadas na reunião</span>
-                <div class="template-content-input">
-                    <textarea type="text" class="custom-input" placeholder="Comece digitando..."></textarea>
-                    <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
-                </div>
-            </div>
-        </ng-template>
-
-        <ng-template [ngIf]="step == 3">
-            <div class="template-content" [ngClass]="step == 3 ? 'custom-width':''">
-                <span class="template-content-title">Por fim, selecione como gostaria que o tom de voz da sua <i>Ata de reunião</i> fosse:</span>
-                <div class="template-content-input">
-                    <div class="box-type-model">
-                        <span for="">Modo relato informal</span>
-                        <mat-slide-toggle>
-                            Modo ata formal
-                        </mat-slide-toggle>
+        <ng-container *ngFor="let obj of objTeste; let i = index">
+            <div [innerHtml]="testing"></div>
+            <ng-template [ngIf]="step == obj.index + 1 &&">
+                <div class="template-content" *ngIf="obj.type == 'string'">
+                    <span class="template-content-title">{{ obj.title }}</span>
+                    <div class="template-content-input">
+                        <textarea type="text" class="custom-input"
+                            placeholder="Comece digitando..."></textarea>
+                        <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
                     </div>
                 </div>
+                <div class="template-content" *ngIf="obj.type == 'string' && obj.enum != undefined" [ngClass]="step == 3 ? 'custom-width':''">
+                    <span class="template-content-title">Por fim, selecione como gostaria que o tom de voz da sua <i>Ata
+                            de
+                            reunião</i> fosse:</span>
+                    <div class="template-content-input">
+                        <div class="box-type-model">
+                            <span for="">Modo relato informal</span>
+                            <mat-slide-toggle>
+                                Modo ata formal
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+
+            <!-- <ng-template [ngIf]="step == 2">
+                <div class="template-content">
+                    <span class="template-content-title">Liste os próximos passos ou tarefas criadas na reunião</span>
+                    <div class="template-content-input">
+                        <textarea type="text" class="custom-input" placeholder="Comece digitando..."></textarea>
+                        <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
+                    </div>
+                </div>
+            </ng-template> -->
+
+            <!-- <ng-template [ngIf]="step === obj.index + 1 && obj.index + 1 == 3">
+                <div class="template-content" [ngClass]="step == 3 ? 'custom-width':''">
+                    <span class="template-content-title">Por fim, selecione como gostaria que o tom de voz da sua <i>Ata
+                            de
+                            reunião</i> fosse:</span>
+                    <div class="template-content-input">
+                        <div class="box-type-model">
+                            <span for="">Modo relato informal</span>
+                            <mat-slide-toggle>
+                                Modo ata formal
+                            </mat-slide-toggle>
+                        </div>
+                    </div>
+                </div>
+            </ng-template> -->
+        </ng-container>
+
+            <div class="template-buttons" [ngClass]="step == 3 ? 'custom-width':''">
+                <button class="btn-cancel">Cancelar</button>
+                <div class="right-buttons">
+                    <button class="btn-skip" *ngIf="step != 3">Pular
+                        <img class="icon-right" src="../../../assets/line right.png" width="12px" alt="">
+                    </button>
+
+                    <button class="btn-previous" *ngIf="step > 1" (click)="previousStep()">Anterior</button>
+
+                    <button class="btn-next" *ngIf="step != 3" [ngClass]="step == 1 ? 'custom-margin':''"
+                        (click)="nextStep()">Próximo</button>
+                    <button class="btn-generate" *ngIf="step == 3" (click)="generateTemplate()">Gerar</button>
+                </div>
             </div>
-        </ng-template>
 
-        <div class="template-buttons" [ngClass]="step == 3 ? 'custom-width':''">
-            <button class="btn-cancel">Cancelar</button>
-            <div class="right-buttons">
-                <button class="btn-skip" *ngIf="step != 3">Pular
-                    <img class="icon-right" src="../../../assets/line right.png" width="12px" alt="">
-                </button>
-
-                <button class="btn-previous" *ngIf="step > 1" (click)="previousStep()">Anterior</button>
-
-                <button class="btn-next" *ngIf="step != 3" [ngClass]="step == 1 ? 'custom-margin':''" (click)="nextStep()">Próximo</button>
-                <button class="btn-generate" *ngIf="step == 3" (click)="generateTemplate()">Gerar</button>
-            </div>
-        </div>
     </div>
 
     <div class="template-area" *ngIf="isLoading && !isResult">
@@ -67,7 +87,39 @@
         </div>
     </div>
 
-    <div class="template-area" *ngIf="!isLoading && isResult">
-        <h1>deu boas!!!</h1>
+    <div class="result-area" *ngIf="!isLoading && isResult">
+        <div>
+
+            <div class="result-title">
+                <span>Aqui está o seu resultado</span>
+                <div class="generate-again">
+                    <span> Gerar novamente </span>
+                    <img src="../../../assets/circle_left.png" width="24px" height="24px" alt="">
+                </div>
+            </div>
+            <textarea class="text-generate" type="text">{{textResult}}</textarea>
+            <div class="result-buttons">
+                <button class="btn-edit">editar</button>
+                <div class="result-buttons-right">
+                    <button class="btn-copy">copiar</button>
+                    <a [href]="fileUrl" download="file.txt">
+                        <button class="btn-export" (click)="exportTxt()">Exportar .txt</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="feedback">
+            <div class="feedback-title">
+                <span>O que você achou do resultador?</span>
+            </div>
+            <div (click)="teste()" class="feedback-icon">
+                <div class="thumb">
+                    <img src="../../../assets/thumb_up.png" width="24px" height="24px" alt="">
+                </div>
+                <div class="thumb">
+                    <img src="../../../assets/thumb_down.png" width="24px" height="24px" alt="">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
