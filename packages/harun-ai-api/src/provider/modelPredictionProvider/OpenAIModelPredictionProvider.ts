@@ -1,5 +1,5 @@
 import { Configuration, OpenAIApi } from 'openai';
-import CreateCompletionError from '../../core/errors/UserPasswordDoNotMatchError copy';
+import CreateCompletionError from '../../core/errors/CreateCompletionError';
 import IModelPredictionProvider from './IModelPredictionProvider';
 
 export default class OpenAIModelPredictionProvider

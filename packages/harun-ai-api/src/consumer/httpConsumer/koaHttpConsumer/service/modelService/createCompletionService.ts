@@ -3,13 +3,15 @@ import z from 'zod';
 
 import InvalidInputParamsError from '../../../../../core/errors/InvalidInputParamsError';
 import ModelNotFoundError from '../../../../../core/errors/ModelNotFoundError';
+import UserNotFoundError from '../../../../../core/errors/UserNotFoundError';
 import CreateCompletionUseCase from '../../../../../core/useCase/model/createCompletionUseCase';
+import { State } from '../../app';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
 export default class CreateCompletionService implements IService<unknown> {
   constructor(private createCompletionUseCase: CreateCompletionUseCase) {}
   async execute(
-    ctx: ParameterizedContext
+    ctx: ParameterizedContext<State>
   ): Promise<ServiceDTO<unknown>['Response']> {
     try {
       const inputs = await z
@@ -26,11 +28,15 @@ export default class CreateCompletionService implements IService<unknown> {
         })
         .parseAsync(ctx.params);
 
+      const userId = ctx.state.user?.id;
+
+      if (!userId) throw new UserNotFoundError();
+
       return {
         success: await this.createCompletionUseCase.use({
           modelId,
           inputs,
-          userId: ctx.state.user.id,
+          userId,
         }),
         statusCode: StatusCode.OK,
       };

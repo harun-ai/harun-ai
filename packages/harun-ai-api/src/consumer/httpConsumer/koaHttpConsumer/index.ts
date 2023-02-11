@@ -5,6 +5,7 @@ import DeleteModelUseCase from '../../../core/useCase/model/deleteModelUseCase';
 import GetModelUseCase from '../../../core/useCase/model/getModelUseCase';
 import ListModelsUseCase from '../../../core/useCase/model/listModelsUseCase';
 import UpdateModelUseCase from '../../../core/useCase/model/updateModelUseCase';
+import EvaluatePredictionUseCase from '../../../core/useCase/prediction/evaluatePredictionUseCase';
 import ListPredictionsUseCase from '../../../core/useCase/prediction/listPredictionsUseCase';
 import CreateUserUseCase from '../../../core/useCase/user/createUserUseCase';
 import DeleteUserUseCase from '../../../core/useCase/user/deleteUserUseCase';
@@ -110,5 +111,10 @@ export const updateUserUseCase = new UpdateUserUseCase(
 export const inviteFriendUseCase = new InviteFriendUseCase(emailProvider);
 
 export const listPredictionsUseCase = new ListPredictionsUseCase(
+  predictionRepository
+);
+
+export const evaluatePredictionUseCase = new EvaluatePredictionUseCase(
+  userRepository,
   predictionRepository
 );
