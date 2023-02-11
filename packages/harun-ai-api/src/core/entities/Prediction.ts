@@ -10,6 +10,7 @@ export default class Prediction {
   model?: Partial<Model>;
   userId: User['id'];
   user?: Partial<User>;
+  liked: boolean | null;
 
   constructor(params: Omit<Prediction, 'createdAt'>) {
     Object.assign(this, params);

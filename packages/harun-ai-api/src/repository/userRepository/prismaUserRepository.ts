@@ -89,6 +89,7 @@ export default class PrismaUserRepository implements IUserRepository {
               },
             },
             inputs: true,
+            liked: true,
           },
         },
         models: {
