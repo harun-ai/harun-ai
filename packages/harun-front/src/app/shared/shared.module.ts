@@ -5,6 +5,7 @@ import { MatRadioModule } from '@angular/material/radio'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { TemplateService } from './services/template.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const modules = [
   MatRadioModule,
@@ -16,11 +17,14 @@ const modules = [
   imports: [
     CommonModule,
     modules,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   exports: [
     HeaderComponent,
-    modules
+    modules,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     TemplateService,

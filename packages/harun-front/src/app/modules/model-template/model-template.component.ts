@@ -18,11 +18,8 @@ export class ModelTemplateComponent implements OnInit {
   fileUrl: any;
   objLength: any;
   objTeste: any;
-  testing = `<div class="template-content-input">
-  <textarea type="text" class="custom-input"
-      placeholder="Comece digitando..."></textarea>
-  <span class="hint-text"><u>Clique aqui</u> para saber como escrever da melhor forma.</span>
-</div>`
+  objTemplate: any;
+  objSend: any = {};
   constructor(
     private templateService: TemplateService,
     private sanitizer: DomSanitizer
@@ -37,45 +34,72 @@ export class ModelTemplateComponent implements OnInit {
   getTemplate() {
     this.templateService.getTemplateModel().subscribe(
       (data: any) => {
+        console.log(data);
 
         this.modelTemplateObj = data.success.inputSchema.properties;
         console.log(this.modelTemplateObj);
 
-        // this.objTeste = Object.getOwnPropertyNames(this.modelTemplateObj).map(
-        //   (key, index) => (
-        //     {
-        //       title: this.modelTemplateObj[key].title,
-        //       index,
-        //       key,
-        //       type: this.modelTemplateObj[key].type,
-        //       enum: this.modelTemplateObj[key].enum
-        //     }
-        //   )
-        // )
+        this.objTeste = Object.getOwnPropertyNames(this.modelTemplateObj).map(
+          (key, index) => (
+            {
+              title: this.modelTemplateObj[key].title,
+              index,
+              key,
+              type: this.modelTemplateObj[key].type,
+              enum: this.modelTemplateObj[key].enum
+            }
+          )
+        )
 
         Object.getOwnPropertyNames(this.modelTemplateObj).forEach((element: any, i: any) => {
           console.log(element);
-          console.log('i',i+1);
-          
+          console.log('i', i + 1);
         })
-        
+
         Object.keys(this.modelTemplateObj)
         this.objLength = Object.keys(this.modelTemplateObj).length
-        // console.log(this.objTeste);
-        console.log('this.step', this.step);
-
-      }
+        console.log(this.objTeste);
+        
+        this.defineStep()
+      } 
     );
 
+  }
+  defineStep(){
+    console.log('this.objTeste', this.objTeste);
+    
+    this.objTeste.forEach((element: any) => {
+      
+      if (this.step == (element.index + 1)) {
+        if (element.enum) {
+          this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : false
+        } else {
+          this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : '';
+        }
+        return this.objTemplate = element;
+        // if (element.enum) {
+        //   this.objSend[index+1] = this.objSend[index+1] ? this.objSend[index+1] : false
+        // } else {
+        //   this.objSend[index+1] = this.objSend[index+1] ? this.objSend[index+1] : '';
+        // }
+        // return this.objTemplate = element;
+      }
+      
+    });
+    console.log('this.objTemplate', this.objTemplate);
   }
 
   nextStep() {
     this.step++;
+    this.defineStep();
+    console.log('this.objSend', this.objSend);
+    
     console.log('this.step', this.step);
   }
 
   previousStep() {
     this.step--;
+    this.defineStep();
     console.log('this.step', this.step);
   }
 
@@ -85,6 +109,8 @@ export class ModelTemplateComponent implements OnInit {
   }
 
   getResult() {
+    console.log('this.objSend', this.objSend);
+    
     setTimeout(() => {
       this.isLoading = false;
       this.isResult = true;
