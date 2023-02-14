@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import {  MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TemplateService } from 'src/app/shared/services/template.service';
+import { DialogComponent } from './dialog/dialog.component';
 
 @Component({
   selector: 'app-model-template',
   templateUrl: './model-template.component.html',
   styleUrls: ['./model-template.component.scss']
 })
-
 
 export class ModelTemplateComponent implements OnInit {
   step = 1
@@ -20,9 +21,11 @@ export class ModelTemplateComponent implements OnInit {
   objTeste: any;
   objTemplate: any;
   objSend: any = {};
+  
   constructor(
     private templateService: TemplateService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog
   ) {
 
   }
@@ -40,13 +43,14 @@ export class ModelTemplateComponent implements OnInit {
         console.log(this.modelTemplateObj);
 
         this.objTeste = Object.getOwnPropertyNames(this.modelTemplateObj).map(
-          (key, index) => (
+          (key) => (
             {
               title: this.modelTemplateObj[key].title,
-              index,
+              index: this.modelTemplateObj[key].sequenceNumber,
               key,
               type: this.modelTemplateObj[key].type,
-              enum: this.modelTemplateObj[key].enum
+              enum: this.modelTemplateObj[key].enum,
+              description: this.modelTemplateObj[key].description
             }
           )
         )
@@ -68,14 +72,17 @@ export class ModelTemplateComponent implements OnInit {
   defineStep(){
     console.log('this.objTeste', this.objTeste);
     
+    console.log('this.objTemplate', this.objTemplate);
     this.objTeste.forEach((element: any) => {
       
       if (this.step == (element.index + 1)) {
         if (element.enum) {
-          this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : false
+          this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : element.enum[0]
         } else {
           this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : '';
         }
+        console.log('element', element);
+        
         return this.objTemplate = element;
         // if (element.enum) {
         //   this.objSend[index+1] = this.objSend[index+1] ? this.objSend[index+1] : false
@@ -86,7 +93,6 @@ export class ModelTemplateComponent implements OnInit {
       }
       
     });
-    console.log('this.objTemplate', this.objTemplate);
   }
 
   nextStep() {
@@ -127,5 +133,17 @@ export class ModelTemplateComponent implements OnInit {
     const blob = new Blob([data], { type: 'application/octet-stream' });
 
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+  }
+
+  openDialog() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      data: {
+        obj: this.objTemplate
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
 }
