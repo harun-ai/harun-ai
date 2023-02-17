@@ -3,6 +3,7 @@ import {  MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TemplateService } from 'src/app/shared/services/template.service';
 import { DialogComponent } from './dialog/dialog.component';
+import { EmailTemplateComponent } from './email-template/email-template.component';
 
 @Component({
   selector: 'app-model-template',
@@ -136,7 +137,7 @@ export class ModelTemplateComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(DialogComponent, {
+    const dialogRef = this.dialog.open(EmailTemplateComponent, {
       data: {
         obj: this.objTemplate
       }

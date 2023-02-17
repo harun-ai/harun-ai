@@ -1,0 +1,104 @@
+.create-account {
+    max-width: 456px;
+    display: grid;
+    justify-items: center;
+    margin: 0 auto;
+}
+.title {
+    text-align: center;
+}
+.title-invite {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 26px;
+    padding: 24px 0 0 0;
+    color: #111111;
+}
+
+.subtitle {
+    margin: 16px 0;
+    text-align: center;
+}
+
+.subtitle-invite {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #33363F;
+
+}
+
+.btn-area {
+    margin-top: 16px;
+    margin-bottom: 53px;
+}
+
+.btn-create-account {
+    width: 216px;
+    height: 48px;
+    border-radius: 32px;
+    background: black;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #FFFFFF;
+}
+
+.box-advantage{
+    width: 457px;
+    height: 291px;
+    background: #EEF2F6;
+    border-radius: 16px;
+    display: grid;
+    justify-items: center;
+    margin-bottom: 12em;
+}
+
+.box-title {
+    align-self: center;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 900;
+    font-size: 22px;
+    line-height: 26px;
+    text-align: center;
+    color: #111111;
+}
+
+.box-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 78px;
+}
+
+.box-content-items {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #33363F;
+}
+
+.btn-test {
+    width: 216px;
+    height: 48px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 16px;
+    text-align: center;
+    text-transform: capitalize;
+    color: #111111;
+    border-radius: 32px;
+    border: 1px solid black;
+}
