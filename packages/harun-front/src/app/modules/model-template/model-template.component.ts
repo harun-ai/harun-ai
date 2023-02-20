@@ -105,11 +105,15 @@ export class ModelTemplateComponent implements OnInit {
 
   getResult() {
     console.log('this.objSend', this.objSend);
+    const payload = this.objSend;
+    this.templateService.postTemplateModel(this.idTemplate, payload).subscribe(
+      data => {
+        console.log('data', data);
+        this.isLoading = false;
+        this.isResult = true;
+      }
+    )
     
-    setTimeout(() => {
-      this.isLoading = false;
-      this.isResult = true;
-    }, 2000);
 
   }
 
