@@ -1,0 +1,21 @@
+<div class="container" *ngIf="templates">
+    <h1 class="libs-template">Biblioteca de templates</h1>
+    <div class="area-card">
+        <div class="card-template" *ngFor="let t of templates">
+            <div class="area-icon-pink">
+                <img src="./../../../assets/Chat_alt_3.png" width="24px" alt="">
+            </div>
+            
+            <div class="card-content">
+                <h2 class="card-content-title">{{t.name}}</h2>
+                <span class="card-content-description">{{t.description}}</span>
+            </div>
+            
+            <div class="card-footer">
+                <a (click)="goToModelTemplate(t.id)">Usar modelo
+                    <img src="./../../../assets/Arrow_right.png" width="24px" alt="">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

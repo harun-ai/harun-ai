@@ -1,19 +1,18 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TemplateService {
-  // configUrl="https://harun-ai-api-stg.herokuapp.com/model/0de728f2-1306-450a-b3a8-d67df56fa22e"
-  configUrl="https://harun-ai-api-stg.herokuapp.com/model/"
+export class HomeService {
+
+  configUrl="https://harun-ai-api-stg.herokuapp.com/model"
 
   constructor(
     private http: HttpClient
   ) { }
-  
-  getTemplateModel(idTemplate: string) {
-    // idTemplate = '0de728f2-1306-450a-b3a8-d67df56fa22e';
+
+  getListTemplate() {
     const headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -23,6 +22,6 @@ export class TemplateService {
     const requestOptions = {                                                                                                                                                                                 
       headers: new HttpHeaders(headerDict), 
     };
-    return this.http.get<any>(`${this.configUrl}${idTemplate}`, requestOptions)  
+    return this.http.get<any>(this.configUrl, requestOptions)  
   }
 }

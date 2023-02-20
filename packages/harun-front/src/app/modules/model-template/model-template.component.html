@@ -1,15 +1,15 @@
-<div class="container" *ngIf="objTeste">
-    <div class="breadcrumb">
+<div class="container" *ngIf="modelTemplate">
+    <div (click)="goToHome()" class="breadcrumb">
         <img src="../../../assets/Line 2.png" width="15px" alt="">
         <span>Ata de reunião</span>
     </div>
 
-    <div class="template-area" *ngIf="!isLoading && !isResult && objTemplate">
+    <div class="template-area" *ngIf="!isLoading && !isResult && stepTemplate">
         <div class="steps">
-            <div class="step" *ngFor="let obj of objTeste; let i = index" [ngClass]="step == i+1 ? 'active':''"></div>
+            <div class="step" *ngFor="let obj of modelTemplate; let i = index" [ngClass]="step == i+1 ? 'active':''"></div>
         </div>
 
-        <div class="template-content" *ngIf="objTemplate.type == 'string' && objTemplate.enum">
+        <div class="template-content" *ngIf="stepTemplate.type == 'string' && stepTemplate.enum">
             <div class="template-content" [ngClass]="step == 3 ? 'custom-width':''">
                 <span class="template-content-title">Por fim, selecione como gostaria que o tom de voz da sua <i>Ata
                         de
@@ -19,18 +19,18 @@
                         <h4>Selecione o tipo da Ata</h4>
                         <mat-form-field appearance="fill">
                             <mat-label>Selecione</mat-label>
-                            <mat-select [(ngModel)]="objSend[objTemplate.key]">                              
-                              <mat-option *ngFor="let ata of objTemplate.enum" value="{{ata}}">{{ata}}</mat-option>                              
+                            <mat-select [(ngModel)]="objSend[stepTemplate.key]">                              
+                              <mat-option *ngFor="let ata of stepTemplate.enum" value="{{ata}}">{{ata}}</mat-option>                              
                             </mat-select>
                           </mat-form-field>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="template-content" *ngIf="objTemplate.type == 'string' && !objTemplate.enum">
-            <span class="template-content-title">{{ objTemplate.title }}</span>
+        <div class="template-content" *ngIf="stepTemplate.type == 'string' && !stepTemplate.enum">
+            <span class="template-content-title">{{ stepTemplate.title }}</span>
             <div class="template-content-input">
-                <textarea type="text" class="custom-input" [(ngModel)]="objSend[objTemplate.key]"
+                <textarea type="text" class="custom-input" [(ngModel)]="objSend[stepTemplate.key]"
                     placeholder="Comece digitando..."></textarea>
                 <span class="hint-text"><u class="cursor-pointer" (click)="openDialog()">Clique aqui</u> para saber como escrever da melhor forma.</span>
             </div>
@@ -39,15 +39,15 @@
         <div class="template-buttons" >
             <button class="btn-cancel">Cancelar</button>
             <div class="right-buttons">
-                <button class="btn-skip" *ngIf="step != objTeste.length">Pular
+                <button class="btn-skip" *ngIf="step != modelTemplate.length">Pular
                     <img class="icon-right" src="../../../assets/line right.png" width="12px" alt="">
                 </button>
 
                 <button class="btn-previous" *ngIf="step > 1" (click)="previousStep()">Anterior</button>
 
-                <button class="btn-next" *ngIf="step != objTeste.length" [ngClass]="step == 1 ? 'custom-margin':''"
+                <button class="btn-next" *ngIf="step != modelTemplate.length" [ngClass]="step == 1 ? 'custom-margin':''"
                     (click)="nextStep()">Próximo</button>
-                <button class="btn-generate" *ngIf="step == objTeste.length" (click)="generateTemplate()">Gerar</button>
+                <button class="btn-generate" *ngIf="step == modelTemplate.length" (click)="generateTemplate()">Gerar</button>
             </div>
         </div>
 

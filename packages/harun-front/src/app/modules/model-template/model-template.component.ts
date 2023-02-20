@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {  MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { TemplateService } from 'src/app/shared/services/template.service';
-import { DialogComponent } from './dialog/dialog.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 
 @Component({
@@ -14,56 +14,50 @@ import { EmailTemplateComponent } from './email-template/email-template.componen
 export class ModelTemplateComponent implements OnInit {
   step = 1
   isResult = false;
-  modelTemplateObj: any;
+  // modelTemplate: any;
   isLoading = false;
   textResult = 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
   fileUrl: any;
-  objLength: any;
-  objTeste: any;
-  objTemplate: any;
+  modelTemplate: any;
+  stepTemplate: any;
   objSend: any = {};
-  
+  idTemplate: any
   constructor(
     private templateService: TemplateService,
     private sanitizer: DomSanitizer,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router
   ) {
-
+    this.idTemplate = this.router.getCurrentNavigation()?.extras.state?.data;
   }
 
   ngOnInit(): void {
-    this.getTemplate()
+    this.getTemplate(this.idTemplate)
   }
 
-  getTemplate() {
-    this.templateService.getTemplateModel().subscribe(
+  getTemplate(idTemplate: string) {
+    this.templateService.getTemplateModel(idTemplate).subscribe(
       (data: any) => {
         console.log(data);
 
-        this.modelTemplateObj = data.success.inputSchema.properties;
-        console.log(this.modelTemplateObj);
+        let response = data.success.inputSchema.properties;
+        console.log(response);
 
-        this.objTeste = Object.getOwnPropertyNames(this.modelTemplateObj).map(
+        this.modelTemplate = Object.getOwnPropertyNames(response).map(
           (key) => (
             {
-              title: this.modelTemplateObj[key].title,
-              index: this.modelTemplateObj[key].sequenceNumber,
+              title: response[key].title,
+              index: response[key].sequenceNumber,
               key,
-              type: this.modelTemplateObj[key].type,
-              enum: this.modelTemplateObj[key].enum,
-              description: this.modelTemplateObj[key].description
+              type: response[key].type,
+              enum: response[key].enum,
+              description: response[key].description
             }
           )
         )
 
-        Object.getOwnPropertyNames(this.modelTemplateObj).forEach((element: any, i: any) => {
-          console.log(element);
-          console.log('i', i + 1);
-        })
-
-        Object.keys(this.modelTemplateObj)
-        this.objLength = Object.keys(this.modelTemplateObj).length
-        console.log(this.objTeste);
+        Object.keys(response)
+        console.log(this.modelTemplate);
         
         this.defineStep()
       } 
@@ -71,10 +65,10 @@ export class ModelTemplateComponent implements OnInit {
 
   }
   defineStep(){
-    console.log('this.objTeste', this.objTeste);
+    console.log('this.modelTemplate', this.modelTemplate);
     
-    console.log('this.objTemplate', this.objTemplate);
-    this.objTeste.forEach((element: any) => {
+    console.log('this.stepTemplate', this.stepTemplate);
+    this.modelTemplate.forEach((element: any) => {
       
       if (this.step == (element.index + 1)) {
         if (element.enum) {
@@ -84,13 +78,7 @@ export class ModelTemplateComponent implements OnInit {
         }
         console.log('element', element);
         
-        return this.objTemplate = element;
-        // if (element.enum) {
-        //   this.objSend[index+1] = this.objSend[index+1] ? this.objSend[index+1] : false
-        // } else {
-        //   this.objSend[index+1] = this.objSend[index+1] ? this.objSend[index+1] : '';
-        // }
-        // return this.objTemplate = element;
+        return this.stepTemplate = element;
       }
       
     });
@@ -139,12 +127,15 @@ export class ModelTemplateComponent implements OnInit {
   openDialog() {
     const dialogRef = this.dialog.open(EmailTemplateComponent, {
       data: {
-        obj: this.objTemplate
+        obj: this.stepTemplate
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });
+  }
+  goToHome() {
+    this.router.navigate([''])
   }
 }

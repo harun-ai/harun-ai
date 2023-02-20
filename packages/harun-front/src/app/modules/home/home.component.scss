@@ -1,0 +1,85 @@
+.container {
+    max-width: 1326px;
+    margin: 0 auto;
+    padding: 20px 20px;
+
+    .libs-template {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 30px;
+        color: #111111;
+
+    }
+
+    .area-card {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 32px;
+
+        .card-template {
+            display: grid;
+            grid-template-rows: 1fr 3fr 1fr;
+            width: 233px;
+            height: 283px;
+            background-color: white;
+            border-radius: 12px;
+
+            .area-icon-pink {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background-color: #FFECF5;
+                width: 52px;
+                height: 52px;
+                margin: 25px 19px 19px 19px;
+            }
+
+            .card-content {
+                margin: 0 19px;
+
+                .card-content-title {
+                    font-family: 'Poppins';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 14px;
+                    line-height: 21px;
+                    color: #33363F;
+                    margin-bottom: 8px;
+                }
+
+                .card-content-description {
+                    font-family: 'Poppins';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: 18px;
+                    color: #999999;
+                }
+            }
+
+            .card-footer {
+                display: flex;
+                align-items: center;
+                margin: 19px;
+
+                a {
+                    cursor: pointer;
+                    font-family: 'Poppins';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 13px;
+                    line-height: 20px;
+                    color: #00A3FF;
+                    text-decoration: none;
+                    display: flex;
+                    justify-content: center;
+                    gap: 6px;
+
+                }
+            }
+        }
+    }
+}
