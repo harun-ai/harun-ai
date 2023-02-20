@@ -5,7 +5,9 @@
     max-width: 1326px;
     margin: 0 auto;
     padding: 20px 20px;
-
+    .cursor-pointer {
+        cursor: pointer;
+    }
     .breadcrumb {
         padding-bottom: 14px;
         cursor: pointer;
@@ -94,6 +96,12 @@
                 textarea {
                     padding: 12px 18px;
                     resize: none;
+                    font-family: "Poppins";
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 150%;
+                    color: #999999;
                 }
 
                 ::placeholder {
@@ -290,7 +298,23 @@
             .result-buttons-right {
                 display: flex;
                 gap: 20px;
-
+                .d-block {
+                    display: block !important;
+                }
+                .text-copied {
+                    z-index: 1000;
+                    position: fixed;
+                    left: 43%;
+                    top: 80%;
+                    background: #33363F;
+                    color: white;
+                    width: 130px;
+                    text-align: center;
+                    height: 30px;
+                    padding: 10px 0 0 0;
+                    border-radius: 4px;
+                    display: none;
+                }
                 .btn-copy {
                     width: 149.83px;
                     height: 47px;

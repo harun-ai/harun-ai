@@ -65,17 +65,20 @@
 
             <div class="result-title">
                 <span>Aqui está o seu resultado</span>
-                <div class="generate-again">
+                <div (click)="generateAgain()" class="cursor-pointer generate-again">
                     <span> Gerar novamente </span>
                     <img src="../../../assets/circle_left.png" width="24px" height="24px" alt="">
                 </div>
             </div>
             <textarea class="text-generate" type="text">{{textResult}}</textarea>
             <div class="result-buttons">
-                <button class="btn-edit">editar</button>
+                <button (click)="backToModelTemplate()" class="btn-edit cursor-pointer">editar</button>
                 <div class="result-buttons-right">
-                    <button class="btn-copy">copiar</button>
-                    <a [href]="fileUrl" download="file.txt">
+                    <div>
+                        <span id="textCopy" class="text-copied">texto copiado!</span>
+                        <button id="btnCopy" class="btn-copy cursor-pointer" (click)="copyMessage()">copiar</button>
+                    </div>
+                        <a [href]="fileUrl" download="file.txt">
                         <button class="btn-export" (click)="exportTxt()">Exportar .txt</button>
                     </a>
                 </div>

@@ -109,6 +109,7 @@ export class ModelTemplateComponent implements OnInit {
     this.templateService.postTemplateModel(this.idTemplate, payload).subscribe(
       data => {
         console.log('data', data);
+        this.textResult = data.success;
         this.isLoading = false;
         this.isResult = true;
       }
@@ -141,5 +142,35 @@ export class ModelTemplateComponent implements OnInit {
   }
   goToHome() {
     this.router.navigate([''])
+  }
+
+  copyMessage(){
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
+    selBox.value = this.textResult;
+    document.body.appendChild(selBox);
+    selBox.focus();
+    selBox.select();
+    document.execCommand('copy');
+    document.body.removeChild(selBox);
+
+    const messageTextCopied = document.getElementById('textCopy')
+    messageTextCopied?.classList.add('d-block')
+    setTimeout(() => {
+      messageTextCopied?.classList.remove('d-block')
+    }, 2000);
+  }
+
+  generateAgain() {
+    window.location.reload();
+  }
+
+  backToModelTemplate() {
+    this.isResult = false;
+    this.step = 1
+    this.defineStep();
   }
 }
