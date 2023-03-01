@@ -24,6 +24,7 @@ export default class UpdateModelService implements IService<Model> {
           topP: z.number().optional(),
           frequencyPenalty: z.number().optional(),
           presencePenalty: z.number().optional(),
+          active: z.boolean().optional(),
         })
         .parseAsync(ctx.request.body);
 
