@@ -48,7 +48,9 @@ export default class ResetPasswordService implements IService<void> {
         return {
           error: {
             code: error.name,
-            message: error.errors.map(error => error.message).join(', '),
+            message: error.errors
+              .map(error => `${error.path}: ${error.message}`)
+              .join(', '),
           },
           statusCode: StatusCode.BAD_REQUEST,
         };

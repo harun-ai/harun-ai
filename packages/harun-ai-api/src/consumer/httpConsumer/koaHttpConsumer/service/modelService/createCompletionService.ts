@@ -55,7 +55,9 @@ export default class CreateCompletionService implements IService<unknown> {
         return {
           error: {
             code: error.name,
-            message: error.errors.map(error => error.message).join(', '),
+            message: error.errors
+              .map(error => `${error.path}: ${error.message}`)
+              .join(', '),
           },
           statusCode: StatusCode.BAD_REQUEST,
         };

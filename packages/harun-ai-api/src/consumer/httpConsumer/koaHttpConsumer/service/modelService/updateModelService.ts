@@ -55,7 +55,9 @@ export default class UpdateModelService implements IService<Model> {
         return {
           error: {
             code: error.name,
-            message: error.errors.map(error => error.message).join(', '),
+            message: error.errors
+              .map(error => `${error.path}: ${error.message}`)
+              .join(', '),
           },
           statusCode: StatusCode.BAD_REQUEST,
         };
