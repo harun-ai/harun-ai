@@ -13,6 +13,28 @@ export default class CreateModelService implements IService<Model> {
     ctx: ParameterizedContext
   ): Promise<ServiceDTO<Model>['Response']> {
     try {
+      const stringPropertySchema = z.object({
+        type: z.enum(['string'], {
+          required_error: "'inputSchema.properties::type' is required",
+        }),
+        enum: z.array(z.string()).optional(),
+        description: z.string({
+          required_error: "'inputSchema.properties::description' is required",
+        }),
+        title: z.string({
+          required_error: "'inputSchema.properties::title' is required",
+        }),
+        sequenceNumber: z
+          .number({
+            required_error:
+              "'inputSchema.properties::sequenceNumber' is required",
+          })
+          .int("'name' is required"),
+        repeats: z.boolean({
+          required_error: "'inputSchema.properties::repeats' is required",
+        }),
+      });
+
       const params = await z
         .object({
           name: z.string({ required_error: "'name' is required" }),
@@ -20,8 +42,16 @@ export default class CreateModelService implements IService<Model> {
           description: z.string({
             required_error: "'description' is required",
           }),
-          inputSchema: z.record(z.unknown(), {
-            required_error: "'inputSchema' is required",
+          inputSchema: z.object({
+            type: z.enum(['object'], {
+              required_error: "'inputSchema.enum' is required",
+            }),
+            required: z.array(z.string(), {
+              required_error: "'inputSchema.required' is required",
+            }),
+            properties: z.record(stringPropertySchema, {
+              required_error: "'inputSchema.properties' is required",
+            }),
           }),
           prompt: z.string({ required_error: "'prompt' is required" }),
           temperature: z.number().nullable(),
@@ -54,7 +84,9 @@ export default class CreateModelService implements IService<Model> {
         return {
           error: {
             code: error.name,
-            message: error.errors.map(error => error.message).join(', '),
+            message: error.errors
+              .map(error => `${error.path}: ${error.message}`)
+              .join(', '),
           },
           statusCode: StatusCode.BAD_REQUEST,
         };
