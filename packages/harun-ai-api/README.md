@@ -1,0 +1,227 @@
+# Harun AI API
+
+
+## Rotas
+
+---
+
+## `POST /model`
+
+### Rota utilizada para criação de novos modelos
+
+Parâmetro|Requerido|Tipo|Definição
+---|---|---|---
+**name**|`sim`|*texto*|Nome do modelo
+**description**|`sim`|*texto*|Descrição do modelo
+**active**|`sim`|*booleano*|Status do modelo, se {false} então o modelo não será listado
+**model**|`sim`|*texto*|Referência do modelo no open-ai
+**inputSchema**|`sim`|*objeto*|Schema do input do schema, possui variáveis que serão inferidas no **prompt** do modelo
+**inputSchema.type**|`sim`|*texto=objeto*| Campo fixo utilizado para validar o input
+**inputSchema.required**|`sim`|*lista de texto*| Lista que contém os inputs requeridos, inputs fora da lista são opcionais
+**inputSchema.properties**|`sim`|*objeto*| Campos de input
+**inputSchema.properties.enum**|`não`|*lista de texto*| Lista os possíveis valores aceitos para campos de input do tipo texto
+**inputSchema.properties.type**|`sim`|*texto=string*| Tipo do valor do input, atualmente aceita-se apenas o tipo string
+**inputSchema.properties.description**|`sim`|*texto*| Descrição do input (helper)
+**inputSchema.properties.title**|`sim`|*texto*| Título do input (pergunta)
+**inputSchema.properties.sequenceNumber**|`sim`|*inteiro positivo*| Utilizado para ordenar os input no form
+**inputSchema.properties.repeats**|`sim`|*booleano*| Indica se o input permite múltiplas respostas
+**prompt**|`sim`|*texto*| Template de texto com variáveis que representam os inputs, para inserir uma variável utiliza-se **${nome_do_input}**
+**temperature**|`não`|*texto*| Parâmetro de configuração do modelo
+**maxTokens**|`não`|*texto*| Parâmetro de configuração do modelo
+**topP**|`não`|*texto*| Parâmetro de configuração do modelo
+**frequencyPenalty**|`não`|*texto*| Parâmetro de configuração do modelo
+**presencePenalty**|`não`|*texto*| Parâmetro de configuração do modelo
+
+Exemplo:
+
+```json
+{
+		"name": "Atas de Reunião 2",
+		"description": "Atas de Reunião",
+		"active": true,
+		"model": "text-davinci-003",
+		"inputSchema": {
+			"type": "object",
+			"required": [
+				"annotations",
+				"tasks",
+				"type"
+			],
+			"properties": {
+				"type": {
+					"enum": [
+						"ata",
+						"relato"
+					],
+					"type": "string",
+					"description": "Com relato",
+					"title": "Com relato",
+					"sequenceNumber": 0,
+					"repeats": "true"
+				},
+				"tasks": {
+					"type": "string",
+					"description": "Tarefas",
+					"title": "Tarefas",
+					"sequenceNumber": 1,
+					"repeats": false
+				},
+				"annotations": {
+					"type": "string",
+					"description": "Anotações",
+					"title": "Anotações",
+					"sequenceNumber": 2,
+					"repeats": false
+				}
+			}
+		},
+		"prompt": "Converta minhas ${annotations} em um ${type} da reunião, escrita em primeira mão e crie uma lista de ${tasks}",
+		"temperature": 0,
+		"maxTokens": 500,
+		"topP": 1,
+		"frequencyPenalty": 0,
+		"presencePenalty": 0
+	}
+```
+
+--- 
+
+## `POST /user`
+
+### Rota para a criação de novos usuários
+
+Para utilizar insira os campos necessários.
+
+Exemplo:
+
+```json
+{
+	"email": "exemplo@email.com",
+	"name": "exemplo de nome",
+	"password": "Exemplo@123"
+}
+```
+
+Quando o usuário é criado, um email é enviado para o email cadastrado contendo um link mágico para a validação do email. O link mágico redireciona para a rota [VERIFICAR EMAIL](#`GET-/user/verify-email?token={token_enviado_por_email}`) contendo um token para a validação do email.
+
+---
+
+## `PUT /user/{id}`
+
+### Rota para a criação de novos usuários
+Para utilizar insira os campos necessários.
+
+Exemplo:
+
+```
+/user/d2b6725e-17a5-490e-bf18-69492d5363a6
+```
+```json
+{
+	"email": "exemplo@email.com",
+	"name": "exemplo de nome",
+	"password": "Exemplo@123"
+}
+```
+
+Quando o usuário é criado, um email é enviado para o email cadastrado contendo um link mágico para a validação do email. O link mágico redireciona para a rota [VERIFICAR EMAIL](#`GET-/user/verify-email?token={token_enviado_por_email}`) contendo um token para a validação do email.
+
+---
+
+## `GET /user`
+
+### Rota que lista os usuários cadastrados no sistema
+
+---
+
+## `DELETE /user/{id}`
+
+### Rota para deletar usuários
+
+Inserir o ID do usuário na url da requisição.
+
+```
+/user/d2b6725e-17a5-490e-bf18-69492d5363a6
+```
+
+---
+
+## `GET /user/verify-email?token={token_enviado_por_email}`
+
+### Rota para varificar o email usuário
+Quando o usuário é cadastrado, um link mágico para está rota é enviado para o email, este link contém um link mágico para a validação do email. Para utilizar esta roda o token deve ser inserido no campo token na query desta rota.
+
+---
+
+## `POST /login`
+
+### Rota para autenticar o usuário cadastrado
+
+Para realizar o login, o usuário deve estar com o email validado.
+
+Ex:
+```json
+{
+	"email": "exemplo@email.com",
+	"password": "Exemplo@123"
+}
+```
+
+---
+
+## `POST /user/forgot-password`
+
+### Rota utilizada para enviar o email de recuperação de senha
+
+Para utilizar é necessário inserir seu email cadastrado. Caso o email não seja encontrado na base, nada será enviado.
+Ex:
+```json
+{
+	"email": "example@email.com"
+}
+```
+Depois de feita a requisição, um email será enviado com um link mágico que permitirá utilizar a rota [RESETAR MINHA SENHA] utilizando o token enviado por email.
+
+---
+
+## `POST /user/reset-password`
+
+### Rota utilizada para resetar a senha do usuário
+
+Ex:
+```json
+{
+	"token": "token_enviado_por_email",
+	"password": "NovaSenhaDoUsuario"
+}
+```
+
+---
+
+## `GET /model`
+
+### Rota utilizada listar os modelos ativos
+
+---
+
+## `GET /model/{id}`
+
+### Rota utilizada listar os detalhes de um modelo
+
+---
+
+## `PUT /model/{id}`
+
+### Rota utilizada para atualizar dados de um modelo
+
+---
+
+## `DELETE /model/{id}`
+
+### Rota utilizada para deletar um modelo
+
+---
+
+## `POST /model/completion/{id}`
+
+### Rota utilizada para criar uma predição com base em um modelo
