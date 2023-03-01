@@ -4,10 +4,14 @@ import InvalidInputParamsError from '../../core/errors/InvalidInputParamsError';
 import ISchemaProvider from './ISchemaProvider';
 
 export default class JsonSchemaProvider implements ISchemaProvider {
-  private ajv = new Ajv({ allErrors: true });
+  private ajv: Ajv;
+
+  constructor() {
+    this.ajv = new Ajv({ allErrors: true });
+    this.ajv.addKeyword('sequenceNumber');
+  }
 
   async validateSchema(schema: Record<string, unknown>): Promise<void> {
-    this.ajv.addKeyword('sequenceNumber');
     this.ajv.compile(schema);
   }
 
