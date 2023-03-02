@@ -6,24 +6,24 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class TemplateService {
   // configUrl="https://harun-ai-api-stg.herokuapp.com/model/0de728f2-1306-450a-b3a8-d67df56fa22e"
-  configUrl="https://harun-ai-api-stg.herokuapp.com/model/"
+  configUrl = "https://harun-ai-api-stg.herokuapp.com/"
 
   constructor(
     private http: HttpClient
   ) { }
-  
+
   getTemplateModel(idTemplate: string) {
     // idTemplate = '0de728f2-1306-450a-b3a8-d67df56fa22e';
     const headerDict = {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Access-Control-Allow-HttpHeaders': 'Content-Type',
-      'Authorization': 'Bearer Fe26.2*1*0737ad4d99c00f132e47f24488a1c5a49ed10608652da1e549e629ecd8e79cea*yH8mFv2G04sDGPMpuxJ4ww*OdnZQmpiGaZsRNVgay0jYp0UAUIKraVSfDAMXpw4ZZcOZNf3Iie4lmGv0Wb0G7Qdcq0hXuyjHpu9D3Mz8Ms_PLvkkRF-nyj4ePNT27hYL1luE_Z29PIkGa4A2cHSv5tL9OxcUE9hcADBnn2IMYYoIoi4E6FpYu1GgpERPXGheU9FSLiuOx9ITQg9C4tumtSxRwnhlw3EhVass3uJrTu7dE5Gt0nUMPuAZjLcT84yw06Z7ZOgVOvOGhvVFwQsuIT-Iw_p2w7gc8iQzLyLOdItJQ*1677000731703*40b333ecab04f3230604a266a4e134de82d5a330020bba7a57e8294769951c44*TzEj6MmnzeGiiMVyUrnomKM3-Q6RzFrPJqyZrevEunc~2',
+      'Authorization': 'Bearer Fe26.2*1*5c1bb34caa58227280b0603fd1dc7c9618f565b69a0a19ce5a4a63fb7d63b1aa*qGUFAmyoSc8BsUNaNswdAg*KPtwVvalVWKW3hOFNc5HFsppkPlw2D382c1ShMvyXSAsHDC0eiwWgxlj97A6keFtoWtfb4gmrRvmQNgLP6f-7SXV4FGIvppZKPWxz0tMEmGbQ7ka9q2daTCwwJKjN34UAAzH5zJBmGlRuo-_SkMZM_dgiiO4bvsLNvS3DARfGzJST8rfqtzLZBO_7ckk4rq3_F42u0V6CvtnurFchbfoIEotI1hdXby7my4CAqtlkbRN0eXyWBd8CId7ekjoCdVD6I6CGLOcdLcqXyLujfSaFA*1677802955385*90f67a36c9728b3e5406c7bfb49ec9fd95779154c2db228b00946d061b59d02f*BlZdbHt_ci38qYsHev8BNfjV6iqioOuUw8VTr-n78mk~2',
     }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders(headerDict), 
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
     };
-    return this.http.get<any>(`${this.configUrl}${idTemplate}`, requestOptions)  
+    return this.http.get<any>(`${this.configUrl}model/${idTemplate}`, requestOptions)
   }
   postTemplateModel(idTemplate: string, payload: any) {
     // idTemplate = '0de728f2-1306-450a-b3a8-d67df56fa22e';
@@ -31,13 +31,28 @@ export class TemplateService {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Access-Control-Allow-HttpHeaders': 'Content-Type',
-      'Authorization': 'Bearer Fe26.2*1*0737ad4d99c00f132e47f24488a1c5a49ed10608652da1e549e629ecd8e79cea*yH8mFv2G04sDGPMpuxJ4ww*OdnZQmpiGaZsRNVgay0jYp0UAUIKraVSfDAMXpw4ZZcOZNf3Iie4lmGv0Wb0G7Qdcq0hXuyjHpu9D3Mz8Ms_PLvkkRF-nyj4ePNT27hYL1luE_Z29PIkGa4A2cHSv5tL9OxcUE9hcADBnn2IMYYoIoi4E6FpYu1GgpERPXGheU9FSLiuOx9ITQg9C4tumtSxRwnhlw3EhVass3uJrTu7dE5Gt0nUMPuAZjLcT84yw06Z7ZOgVOvOGhvVFwQsuIT-Iw_p2w7gc8iQzLyLOdItJQ*1677000731703*40b333ecab04f3230604a266a4e134de82d5a330020bba7a57e8294769951c44*TzEj6MmnzeGiiMVyUrnomKM3-Q6RzFrPJqyZrevEunc~2',
+      'Authorization': 'Bearer Fe26.2*1*5c1bb34caa58227280b0603fd1dc7c9618f565b69a0a19ce5a4a63fb7d63b1aa*qGUFAmyoSc8BsUNaNswdAg*KPtwVvalVWKW3hOFNc5HFsppkPlw2D382c1ShMvyXSAsHDC0eiwWgxlj97A6keFtoWtfb4gmrRvmQNgLP6f-7SXV4FGIvppZKPWxz0tMEmGbQ7ka9q2daTCwwJKjN34UAAzH5zJBmGlRuo-_SkMZM_dgiiO4bvsLNvS3DARfGzJST8rfqtzLZBO_7ckk4rq3_F42u0V6CvtnurFchbfoIEotI1hdXby7my4CAqtlkbRN0eXyWBd8CId7ekjoCdVD6I6CGLOcdLcqXyLujfSaFA*1677802955385*90f67a36c9728b3e5406c7bfb49ec9fd95779154c2db228b00946d061b59d02f*BlZdbHt_ci38qYsHev8BNfjV6iqioOuUw8VTr-n78mk~2',
     }
-    const requestOptions = {                                                                                                                                                                                 
-      headers: new HttpHeaders(headerDict), 
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
     };
     console.log('endpoint', `${this.configUrl}completion/${idTemplate}`);
-    
-    return this.http.post<any>(`${this.configUrl}completion/${idTemplate}`, payload, requestOptions)  
+
+    return this.http.post<any>(`${this.configUrl}model/completion/${idTemplate}`, payload, requestOptions)
+  }
+
+  postFeedback(payload: { predictionId: string, liked: boolean }) {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-HttpHeaders': 'Content-Type',
+      'Authorization': 'Bearer Fe26.2*1*5c1bb34caa58227280b0603fd1dc7c9618f565b69a0a19ce5a4a63fb7d63b1aa*qGUFAmyoSc8BsUNaNswdAg*KPtwVvalVWKW3hOFNc5HFsppkPlw2D382c1ShMvyXSAsHDC0eiwWgxlj97A6keFtoWtfb4gmrRvmQNgLP6f-7SXV4FGIvppZKPWxz0tMEmGbQ7ka9q2daTCwwJKjN34UAAzH5zJBmGlRuo-_SkMZM_dgiiO4bvsLNvS3DARfGzJST8rfqtzLZBO_7ckk4rq3_F42u0V6CvtnurFchbfoIEotI1hdXby7my4CAqtlkbRN0eXyWBd8CId7ekjoCdVD6I6CGLOcdLcqXyLujfSaFA*1677802955385*90f67a36c9728b3e5406c7bfb49ec9fd95779154c2db228b00946d061b59d02f*BlZdbHt_ci38qYsHev8BNfjV6iqioOuUw8VTr-n78mk~2',
+    }
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
+    };
+
+    return this.http.post<any>(`${this.configUrl}prediction/evaluate`, payload, requestOptions)
+
   }
 }

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {  MatDialog } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TemplateService } from 'src/app/shared/services/template.service';
+import { DialogCancelComponent } from './dialog-cancel/dialog-cancel.component';
+import { DialogComponent } from './dialog/dialog.component';
 import { EmailTemplateComponent } from './email-template/email-template.component';
 
 @Component({
@@ -16,12 +18,16 @@ export class ModelTemplateComponent implements OnInit {
   isResult = false;
   // modelTemplate: any;
   isLoading = false;
-  textResult = 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
+  textResult = '';
   fileUrl: any;
   modelTemplate: any;
   stepTemplate: any;
   objSend: any = {};
   idTemplate: any
+  responseTemplate: any;
+  skip = true;
+  modelName: string;
+  prediction: any;
   constructor(
     private templateService: TemplateService,
     private sanitizer: DomSanitizer,
@@ -40,9 +46,10 @@ export class ModelTemplateComponent implements OnInit {
       (data: any) => {
         console.log(data);
 
+        this.responseTemplate = data.success.inputSchema;
+        this.modelName = data.success.name;
         let response = data.success.inputSchema.properties;
-        console.log(response);
-
+        console.log('this.responseTemplate', this.responseTemplate);
         this.modelTemplate = Object.getOwnPropertyNames(response).map(
           (key) => (
             {
@@ -58,37 +65,36 @@ export class ModelTemplateComponent implements OnInit {
 
         Object.keys(response)
         console.log(this.modelTemplate);
-        
+
         this.defineStep()
-      } 
+      }
     );
 
   }
-  defineStep(){
-    console.log('this.modelTemplate', this.modelTemplate);
-    
-    console.log('this.stepTemplate', this.stepTemplate);
+  defineStep() {
     this.modelTemplate.forEach((element: any) => {
-      
+
       if (this.step == (element.index + 1)) {
         if (element.enum) {
           this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : element.enum[0]
         } else {
           this.objSend[element.key] = this.objSend[element.key] ? this.objSend[element.key] : '';
         }
-        console.log('element', element);
-        
+        if (this.responseTemplate.required.includes(`${element.key}`)) {
+          this.skip = false;
+        }
         return this.stepTemplate = element;
       }
-      
+
     });
+    console.log('this.stepTemplate', this.stepTemplate);
   }
 
   nextStep() {
     this.step++;
     this.defineStep();
     console.log('this.objSend', this.objSend);
-    
+
     console.log('this.step', this.step);
   }
 
@@ -109,17 +115,14 @@ export class ModelTemplateComponent implements OnInit {
     this.templateService.postTemplateModel(this.idTemplate, payload).subscribe(
       data => {
         console.log('data', data);
-        this.textResult = data.success;
+        this.prediction = data.success;
+        this.textResult = data.success.result;
         this.isLoading = false;
         this.isResult = true;
       }
     )
-    
 
-  }
 
-  teste() {
-    this.textResult = 'Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliquaLorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Ciceros De Finibus Bonorum et Malorum for use in a type specimen book. It usually begins with:Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
   }
 
   exportTxt() {
@@ -130,7 +133,7 @@ export class ModelTemplateComponent implements OnInit {
   }
 
   openDialog() {
-    const dialogRef = this.dialog.open(EmailTemplateComponent, {
+    const dialogRef = this.dialog.open(DialogComponent, {
       data: {
         obj: this.stepTemplate
       }
@@ -140,11 +143,23 @@ export class ModelTemplateComponent implements OnInit {
       console.log(`Dialog result: ${result}`);
     });
   }
+
+  cancel() {
+    const dialogRef = this.dialog.open(DialogCancelComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+      if (result == true) {
+        this.router.navigate([''])
+      }
+    });
+
+  }
   goToHome() {
     this.router.navigate([''])
   }
 
-  copyMessage(){
+  copyMessage() {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
     selBox.style.left = '0';
@@ -172,5 +187,17 @@ export class ModelTemplateComponent implements OnInit {
     this.isResult = false;
     this.step = 1
     this.defineStep();
+  }
+
+  feedback(like: boolean) {
+    const payload = {
+      predictionId: this.prediction.id,
+      liked: like
+    }
+    this.templateService.postFeedback(payload).subscribe(
+      data => {
+        console.log('data#######################', data);
+      }
+    )
   }
 }

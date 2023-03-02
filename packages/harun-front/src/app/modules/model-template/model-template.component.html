@@ -37,9 +37,9 @@
         </div>
 
         <div class="template-buttons" >
-            <button class="btn-cancel">Cancelar</button>
+            <button class="btn-cancel" (click)="cancel()">Cancelar</button>
             <div class="right-buttons">
-                <button class="btn-skip" *ngIf="step != modelTemplate.length">Pular
+                <button class="btn-skip" (click)="nextStep()" *ngIf="step != modelTemplate.length && skip == true">Pular
                     <img class="icon-right" src="../../../assets/line right.png" width="12px" alt="">
                 </button>
 
@@ -56,7 +56,7 @@
     <div class="template-area" *ngIf="isLoading && !isResult">
         <div class="loading-area">
             <div class="loading-circle"></div>
-            <span>Estou gerando o template <i>Ata de reunião</i>, aguarde alguns instantes</span>
+            <span>Estou gerando o template <i>{{modelName}}</i>, aguarde alguns instantes</span>
         </div>
     </div>
 
@@ -88,11 +88,11 @@
             <div class="feedback-title">
                 <span>O que você achou do resultador?</span>
             </div>
-            <div (click)="teste()" class="feedback-icon">
-                <div class="thumb">
+            <div class="feedback-icon">
+                <div class="thumb" (click)="feedback(true)">
                     <img src="../../../assets/thumb_up.png" width="24px" height="24px" alt="">
                 </div>
-                <div class="thumb">
+                <div class="thumb" (click)="feedback(false)">
                     <img src="../../../assets/thumb_down.png" width="24px" height="24px" alt="">
                 </div>
             </div>
