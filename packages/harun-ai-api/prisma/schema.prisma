@@ -32,11 +32,11 @@ model Model {
   model            String       @db.VarChar(255)
   inputSchema      Json
   prompt           String       @db.VarChar(255)
-  temperature      Int?
+  temperature      Float?
   maxTokens        Int?
-  topP             Int?
-  frequencyPenalty Int?
-  presencePenalty  Int?
+  topP             Float?
+  frequencyPenalty Float?
+  presencePenalty  Float?
   user             User         @relation(fields: [userId], references: [id])
   userId           String       @db.VarChar(255)
   predictions      Prediction[]
