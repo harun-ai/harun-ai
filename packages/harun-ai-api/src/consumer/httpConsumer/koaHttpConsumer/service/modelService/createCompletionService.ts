@@ -1,3 +1,4 @@
+import { Prediction } from '@prisma/client';
 import { ParameterizedContext } from 'koa';
 import z from 'zod';
 
@@ -8,11 +9,11 @@ import CreateCompletionUseCase from '../../../../../core/useCase/model/createCom
 import { State } from '../../app';
 import IService, { ServiceDTO, StatusCode } from '../IService';
 
-export default class CreateCompletionService implements IService<unknown> {
+export default class CreateCompletionService implements IService<Prediction> {
   constructor(private createCompletionUseCase: CreateCompletionUseCase) {}
   async execute(
     ctx: ParameterizedContext<State>
-  ): Promise<ServiceDTO<unknown>['Response']> {
+  ): Promise<ServiceDTO<Prediction>['Response']> {
     try {
       const inputs = await z
         .record(z.unknown(), {

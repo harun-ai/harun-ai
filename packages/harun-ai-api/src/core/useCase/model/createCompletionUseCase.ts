@@ -15,7 +15,7 @@ export type CreateCompletionUseCaseDTO = {
     inputs: Record<string, unknown>;
     userId: User['id'];
   };
-  Response: unknown;
+  Response: Prediction;
 };
 
 export default class CreateCompletionUseCase
@@ -33,7 +33,7 @@ export default class CreateCompletionUseCase
     modelId,
     userId,
     inputs,
-  }: CreateCompletionUseCaseDTO['Request']): Promise<unknown> {
+  }: CreateCompletionUseCaseDTO['Request']): Promise<Prediction> {
     const model = await this.modelRepository.get(modelId);
 
     await this.shemaProvider.validate(inputs, model.inputSchema);
@@ -53,16 +53,17 @@ export default class CreateCompletionUseCase
       presencyPenalty: model.presencePenalty,
     });
 
-    await this.predictionRepository.save(
+    const prediction = await this.predictionRepository.save(
       new Prediction({
         id: await this.idProvider.generateId(),
         modelId,
         userId,
         result,
         inputs,
+        liked: null,
       })
     );
 
-    return result;
+    return prediction;
   }
 }
