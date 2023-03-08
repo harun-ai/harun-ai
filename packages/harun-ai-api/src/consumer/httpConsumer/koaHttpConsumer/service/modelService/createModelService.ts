@@ -30,9 +30,7 @@ export default class CreateModelService implements IService<Model> {
               "'inputSchema.properties::sequenceNumber' is required",
           })
           .int("'name' is required"),
-        repeats: z.boolean({
-          required_error: "'inputSchema.properties::repeats' is required",
-        }),
+        choices: z.array(z.string()).optional(),
       });
 
       const params = await z

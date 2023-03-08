@@ -9,7 +9,7 @@ export default class JsonSchemaProvider implements ISchemaProvider {
   constructor() {
     this.ajv = new Ajv({ allErrors: true });
     this.ajv.addKeyword('sequenceNumber');
-    this.ajv.addKeyword('repeats');
+    this.ajv.addKeyword('choices');
   }
 
   async validateSchema(schema: Record<string, unknown>): Promise<void> {
